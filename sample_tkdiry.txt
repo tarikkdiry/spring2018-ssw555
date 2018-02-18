@@ -1,0 +1,288 @@
+--> 0 HEAD
+<-- 0|HEAD|Y|0 HEAD
+--> 1 SOUR Family Echo
+<-- 1|SOUR|N|Family Echo
+--> 2 WWW http://www.familyecho.com/
+<-- 2|WWW|N|http://www.familyecho.com/
+--> 1 FILE My Family
+<-- 1|FILE|N|My Family
+--> 1 DATE 29 JAN 2018
+<-- 1|DATE|N|29 JAN 2018
+--> 1 DEST ANSTFILE
+<-- 1|DEST|N|ANSTFILE
+--> 1 GEDC
+<-- 1|GEDC|N|1 GEDC
+--> 2 VERS 5.5.1
+<-- 2|VERS|N|5.5.1
+--> 2 FORM LINEAGE-LINKED
+<-- 2|FORM|N|LINEAGE-LINKED
+--> 1 SUBM @I1@
+<-- 1|SUBM|N|@I1@
+--> 2 NAME Tarik Kdiry
+<-- 2|NAME|N|Tarik Kdiry
+--> 1 SUBN
+<-- 1|SUBN|N|1 SUBN
+--> 1 CHAR UTF-8
+<-- 1|CHAR|N|UTF-8
+--> 0 @I1@ INDI
+<-- 0|INDI|Y|id
+--> 1 NAME Tarik /Kdiry/
+<-- 1|NAME|Y|Tarik /Kdiry/
+--> 2 GIVN Tarik
+<-- 2|GIVN|N|Tarik
+--> 2 SURN Kdiry
+<-- 2|SURN|N|Kdiry
+--> 2 _MARNM Kdiry
+<-- 2|_MARNM|N|Kdiry
+--> 1 SEX M
+<-- 1|SEX|Y|M
+--> 1 BIRT
+<-- 1|BIRT|Y|1 BIRT
+--> 2 DATE 6 FEB 1997
+<-- 2|DATE|Y|6 FEB 1997
+--> 1 FAMC @F1@
+<-- 1|FAMC|Y|@F1@
+--> 0 @I2@ INDI
+<-- 0|INDI|Y|id
+--> 1 NAME Abdellatif /Kdiry/
+<-- 1|NAME|Y|Abdellatif /Kdiry/
+--> 2 GIVN Abdellatif
+<-- 2|GIVN|N|Abdellatif
+--> 2 SURN Kdiry
+<-- 2|SURN|N|Kdiry
+--> 2 _MARNM Kdiry
+<-- 2|_MARNM|N|Kdiry
+--> 1 SEX M
+<-- 1|SEX|Y|M
+--> 1 BIRT
+<-- 1|BIRT|Y|1 BIRT
+--> 2 DATE 13 AUG 1946
+<-- 2|DATE|Y|13 AUG 1946
+--> 1 FAMS @F1@
+<-- 1|FAMS|Y|@F1@
+--> 1 FAMS @F2@
+<-- 1|FAMS|Y|@F2@
+--> 0 @I3@ INDI
+<-- 0|INDI|Y|id
+--> 1 NAME Sakina /Imami/
+<-- 1|NAME|Y|Sakina /Imami/
+--> 2 GIVN Sakina
+<-- 2|GIVN|N|Sakina
+--> 2 SURN Imami
+<-- 2|SURN|N|Imami
+--> 2 _MARNM Kdiry
+<-- 2|_MARNM|N|Kdiry
+--> 1 SEX F
+<-- 1|SEX|Y|F
+--> 1 BIRT
+<-- 1|BIRT|Y|1 BIRT
+--> 2 DATE 25 FEB 1963
+<-- 2|DATE|Y|25 FEB 1963
+--> 1 FAMS @F1@
+<-- 1|FAMS|Y|@F1@
+--> 1 FAMC @F3@
+<-- 1|FAMC|Y|@F3@
+--> 0 @I4@ INDI
+<-- 0|INDI|Y|id
+--> 1 NAME Laila /Kdiry/
+<-- 1|NAME|Y|Laila /Kdiry/
+--> 2 GIVN Laila
+<-- 2|GIVN|N|Laila
+--> 2 SURN Kdiry
+<-- 2|SURN|N|Kdiry
+--> 2 _MARNM Kdiry
+<-- 2|_MARNM|N|Kdiry
+--> 1 SEX F
+<-- 1|SEX|Y|F
+--> 1 BIRT
+<-- 1|BIRT|Y|1 BIRT
+--> 2 DATE 26 MAR 1991
+<-- 2|DATE|Y|26 MAR 1991
+--> 1 FAMC @F1@
+<-- 1|FAMC|Y|@F1@
+--> 0 @I5@ INDI
+<-- 0|INDI|Y|id
+--> 1 NAME Muhamed /Imami/
+<-- 1|NAME|Y|Muhamed /Imami/
+--> 2 GIVN Muhamed
+<-- 2|GIVN|N|Muhamed
+--> 2 SURN Imami
+<-- 2|SURN|N|Imami
+--> 2 _MARNM Imami
+<-- 2|_MARNM|N|Imami
+--> 1 SEX M
+<-- 1|SEX|Y|M
+--> 1 BIRT
+<-- 1|BIRT|Y|1 BIRT
+--> 2 DATE 1 JAN 1920
+<-- 2|DATE|Y|1 JAN 1920
+--> 1 DEAT Y
+<-- 1|DEAT|Y|Y
+--> 2 DATE 1 JAN 1980
+<-- 2|DATE|Y|1 JAN 1980
+--> 1 FAMS @F3@
+<-- 1|FAMS|Y|@F3@
+--> 0 @I6@ INDI
+<-- 0|INDI|Y|id
+--> 1 NAME Halima /Imami/
+<-- 1|NAME|Y|Halima /Imami/
+--> 2 GIVN Halima
+<-- 2|GIVN|N|Halima
+--> 2 SURN Imami
+<-- 2|SURN|N|Imami
+--> 2 _MARNM Imami
+<-- 2|_MARNM|N|Imami
+--> 1 SEX F
+<-- 1|SEX|Y|F
+--> 1 BIRT
+<-- 1|BIRT|Y|1 BIRT
+--> 2 DATE 1 JAN 1920
+<-- 2|DATE|Y|1 JAN 1920
+--> 1 FAMS @F3@
+<-- 1|FAMS|Y|@F3@
+--> 0 @I7@ INDI
+<-- 0|INDI|Y|id
+--> 1 NAME Isabel /Kdiry/
+<-- 1|NAME|Y|Isabel /Kdiry/
+--> 2 GIVN Isabel
+<-- 2|GIVN|N|Isabel
+--> 2 SURN Kdiry
+<-- 2|SURN|N|Kdiry
+--> 2 _MARNM Calderon
+<-- 2|_MARNM|N|Calderon
+--> 1 SEX F
+<-- 1|SEX|Y|F
+--> 1 BIRT
+<-- 1|BIRT|Y|1 BIRT
+--> 2 DATE 24 MAR 1952
+<-- 2|DATE|Y|24 MAR 1952
+--> 1 FAMS @F2@
+<-- 1|FAMS|Y|@F2@
+--> 0 @I8@ INDI
+<-- 0|INDI|Y|id
+--> 1 NAME Youssef /Kdiry/
+<-- 1|NAME|Y|Youssef /Kdiry/
+--> 2 GIVN Youssef
+<-- 2|GIVN|N|Youssef
+--> 2 SURN Kdiry
+<-- 2|SURN|N|Kdiry
+--> 2 _MARNM Kdiry
+<-- 2|_MARNM|N|Kdiry
+--> 1 SEX M
+<-- 1|SEX|Y|M
+--> 1 BIRT
+<-- 1|BIRT|Y|1 BIRT
+--> 2 DATE 25 JAN 1972
+<-- 2|DATE|Y|25 JAN 1972
+--> 1 FAMC @F2@
+<-- 1|FAMC|Y|@F2@
+--> 0 @I9@ INDI
+<-- 0|INDI|Y|id
+--> 1 NAME Sabrina /Kdiry/
+<-- 1|NAME|Y|Sabrina /Kdiry/
+--> 2 GIVN Sabrina
+<-- 2|GIVN|N|Sabrina
+--> 2 SURN Kdiry
+<-- 2|SURN|N|Kdiry
+--> 2 _MARNM Kdiry
+<-- 2|_MARNM|N|Kdiry
+--> 1 SEX F
+<-- 1|SEX|Y|F
+--> 1 BIRT
+<-- 1|BIRT|Y|1 BIRT
+--> 2 DATE 20 JUL 1980
+<-- 2|DATE|Y|20 JUL 1980
+--> 1 FAMS @F4@
+<-- 1|FAMS|Y|@F4@
+--> 1 FAMC @F2@
+<-- 1|FAMC|Y|@F2@
+--> 0 @I10@ INDI
+<-- 0|INDI|Y|id
+--> 1 NAME Christopher /Scuorzo/
+<-- 1|NAME|Y|Christopher /Scuorzo/
+--> 2 GIVN Christopher
+<-- 2|GIVN|N|Christopher
+--> 2 SURN Scuorzo
+<-- 2|SURN|N|Scuorzo
+--> 2 _MARNM Scuorzo
+<-- 2|_MARNM|N|Scuorzo
+--> 1 SEX M
+<-- 1|SEX|Y|M
+--> 1 BIRT
+<-- 1|BIRT|Y|1 BIRT
+--> 2 DATE 1 JAN 1980
+<-- 2|DATE|Y|1 JAN 1980
+--> 1 FAMS @F4@
+<-- 1|FAMS|Y|@F4@
+--> 0 @F1@ FAM
+<-- 0|@F1@|N|FAM
+--> 1 HUSB @I2@
+<-- 1|HUSB|Y|@I2@
+--> 1 WIFE @I3@
+<-- 1|WIFE|Y|@I3@
+--> 1 CHIL @I1@
+<-- 1|CHIL|Y|@I1@
+--> 1 CHIL @I4@
+<-- 1|CHIL|Y|@I4@
+--> 1 MARR
+<-- 1|MARR|Y|1 MARR
+--> 2 DATE 1 JAN 1990
+<-- 2|DATE|Y|1 JAN 1990
+--> 2 PLAC Tangier, Morocco
+<-- 2|PLAC|N|Tangier, Morocco
+--> 1 _CURRENT Y
+<-- 1|_CURRENT|N|Y
+--> 0 @F2@ FAM
+<-- 0|@F2@|N|FAM
+--> 1 HUSB @I2@
+<-- 1|HUSB|Y|@I2@
+--> 1 WIFE @I7@
+<-- 1|WIFE|Y|@I7@
+--> 1 CHIL @I8@
+<-- 1|CHIL|Y|@I8@
+--> 1 CHIL @I9@
+<-- 1|CHIL|Y|@I9@
+--> 1 MARR
+<-- 1|MARR|Y|1 MARR
+--> 2 DATE 1 JAN 1970
+<-- 2|DATE|Y|1 JAN 1970
+--> 2 PLAC Madrid, Spain
+<-- 2|PLAC|N|Madrid, Spain
+--> 1 DIV
+<-- 1|DIV|Y|1 DIV
+--> 2 DATE 1 JAN 1985
+<-- 2|DATE|Y|1 JAN 1985
+--> 1 _CURRENT N
+<-- 1|_CURRENT|N|N
+--> 0 @F3@ FAM
+<-- 0|@F3@|N|FAM
+--> 1 HUSB @I5@
+<-- 1|HUSB|Y|@I5@
+--> 1 WIFE @I6@
+<-- 1|WIFE|Y|@I6@
+--> 1 CHIL @I3@
+<-- 1|CHIL|Y|@I3@
+--> 1 MARR
+<-- 1|MARR|Y|1 MARR
+--> 2 DATE 1 JAN 1950
+<-- 2|DATE|Y|1 JAN 1950
+--> 2 PLAC Tangier, Morocco
+<-- 2|PLAC|N|Tangier, Morocco
+--> 1 _CURRENT Y
+<-- 1|_CURRENT|N|Y
+--> 0 @F4@ FAM
+<-- 0|@F4@|N|FAM
+--> 1 HUSB @I10@
+<-- 1|HUSB|Y|@I10@
+--> 1 WIFE @I9@
+<-- 1|WIFE|Y|@I9@
+--> 1 MARR
+<-- 1|MARR|Y|1 MARR
+--> 2 DATE 1 JUL 2011
+<-- 2|DATE|Y|1 JUL 2011
+--> 2 PLAC Effort, Pennsylvania
+<-- 2|PLAC|N|Effort, Pennsylvania
+--> 1 _CURRENT Y
+<-- 1|_CURRENT|N|Y
+--> 0 TRLR
+<-- 0|TRLR|Y|0 TRLR
