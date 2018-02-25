@@ -6,6 +6,7 @@ INPUT_EXTENSION = '.ged'
 OUTPUT_EXTENSION = '.txt'
 TAGS = ['INDI', 'NAME', 'SEX', 'BIRT', 'DEAT', 'FAMC', 'FAMS', 'FAM', 'MARR', 'HUSB', 'WIFE', 'CHIL', 'DIV', 'DATE', 'HEAD', 'TRLR', 'NOTE']
 LEVELS = {'INDI':'0', 'NAME':'1', 'SEX':'1', 'BIRT':'1', 'DEAT':'1', 'FAMC':'1', 'FAMS':'1', 'FAM':'0', 'MARR':'1', 'HUSB':'1', 'WIFE':'1', 'CHIL':'1', 'DIV':'1', 'DATE':'2', 'HEAD':'0', 'TRLR':'0', 'NOTE':'0'}
+TEST_ID = True;
 
 def file():
     geds = []
@@ -199,6 +200,38 @@ def Database(file):
             if ('MARR') in line:
                 dateType = 'MARR'
 
+            if len(id) > len(set(id)):
+                TEST_ID = False
+
+            # i = 0
+            # curr = id[i]
+            # temp = id[i+1]
+            # for item in id:
+            #     if curr != temp and temp != NULL:
+            #         i = i + 1
+            #     else:
+            #         TEST_ID = False
+
+
+#TESTING
+def TAGS_SIZE(TAGS):
+    if len(TAGS) != 17:
+        return False
+    return True
+
+def LEVELS_SIZE(LEVELS):
+    if len(LEVELS) != 17:
+        return False
+    return True
+
+def unique_ID():
+    if TEST_ID == True:
+        return True
+    return False
+
+
+
+#END TESTING
 
 def printTable(database):
 
