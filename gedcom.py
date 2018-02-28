@@ -11,6 +11,7 @@ TEST_HUSBAND_NAME = True
 TEST_WIFE_NAME = True
 TEST_HUSBAND_ID = True
 TEST_WIFE_ID = True
+TEST_MARRAGE_VALID = True
 
 def file():
     geds = []
@@ -218,7 +219,39 @@ def Database(file):
                 TEST_HUSBAND_ID = False
 
             if len(Wife_ID) > len(set(Wife_ID)):
-                TEST_Wife_ID = False
+                TEST_WIFE_ID = False
+             
+            #MORE TESTS
+             
+            if Married != ["NULL"]:
+                MarriedPeople = GetFromDB('individuals', '*', 'spouse', "!= [NULL]")
+                Married_ID_Date = []
+                for x in MarriedPeople:
+                    Married_ID_Date = ([x[0],x[1]])
+                    Gender = x[2]
+                    if ((Gender == "M") | (GetFromDB('families', 'Married', 'Husband_ID', Married_ID_Date[0])[2] < Married_ID_Date[1])):
+                        TEST_MARRAGE_VALID = False
+                        break
+                        
+                    if ((Gender == "F") | (GetFromDB('families', 'Married', 'Husband_ID', Married_ID_Date[0])[2] < Married_ID_Date[1])):
+                        TEST_MARRAGE_VALID = False
+                        break
+                    
+                    
+                
+                
+                
+                
+def GetFromDB(table, column, thisData, condition): 
+    connection = sqlite3.connect('database.sqlite3')
+    cursor = connection.cursor()
+    cursor.execute('SELECT '+ column +' from ' + table + ' where' + thisData + + condition )
+    row = cursor.fetchone()
+    data = []
+    while row is not None:
+        data.append(row)
+        row = cursor.fetchone()
+    return data       
 
 #TESTING
 def TAGS_SIZE(TAGS):
@@ -256,12 +289,40 @@ def uniqueWifeName():
         return True
     return False
 
+def marrageAfterBirth():
+    if TEST_MARRAGE_VALID == True:
+        return True
+    return False
+
+def marrageExist():
+    connection = sqlite3.connect('database.sqlite3')
+    cursor = connection.cursor()
+    cursor.execute('''SELECT Married FROM Families''')
+    return cursor.fetchone()
+    
+def husbandExist():
+    connection = sqlite3.connect('database.sqlite3')
+    cursor = connection.cursor()
+    cursor.execute('''SELECT Husband_ID FROM Families''')
+    return cursor.fetchone()
+
+def wifeExist():
+    connection = sqlite3.connect('database.sqlite3')
+    cursor = connection.cursor()
+    cursor.execute('''SELECT Wife_ID FROM Families''')
+    return cursor.fetchone()
+
+def familyUnique():
+    connection = sqlite3.connect('database.sqlite3')
+    cursor = connection.cursor()
+    cursor.execute('''SELECT ID FROM Families''')
+    return cursor.fetchone()
 
 #END TESTING
 
 def printTable(database):
 
-    connection = sqlite3.connect('database.sqlite3')
+    connection = sqlite3.connect(database)
     cursor = connection.cursor()
     print("Gedcom Data - Individuals:")
     print('-'*40)

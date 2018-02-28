@@ -26,6 +26,21 @@ class Test(unittest.TestCase):
     def test_wifeName(self):
         self.assertEqual(gedcom.uniqueWifeName(), True)
 
-
+    def test_marrageAfterBirth(self):
+        self.assertEquals(gedcom.marrageAfterBirth(), True)
+    
+    def test_marrageExist(self):
+        self.assertNotEqual(gedcom.marrageExist(), ["NULL"])
+    
+    def test_husbandExist(self):
+        self.assertNotEqual(gedcom.husbandExist(), ["NULL"])
+        
+    def test_wifeExist(self):
+        self.assertNotEqual(gedcom.wifeExist(), ["NULL"])
+    
+    def test_familyUnique(self):
+        self.assertNotEqual(gedcom.familyUnique(), ["NULL"])   
+    
+    
 if __name__ == "__main__":
     unittest.main()
