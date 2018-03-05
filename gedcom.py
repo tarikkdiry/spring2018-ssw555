@@ -272,6 +272,8 @@ def us02(db, marriage_date, individual_ID): #Oscar
     if not marriage_date:
         return False
     query = queryDict(db, "Individuals", individual_ID, "Birthday")['Birthday']
+    if(query == "None"):
+        return False
     query = ''.join(c for c in query if c not in " (){}<>[]''")
     query = query.split(',')
     ib = datetime(int(query[2]), int(MONTHS[query[1]]), int(query[0]))
@@ -327,4 +329,3 @@ if __name__ == '__main__':
     db = ged.replace(EXTENSION, '.sqlite3')
     database(ged, db)
     tables(db)
-    print (us02(db,  ['1', 'JAN', '1900'] , "I2"))
