@@ -258,6 +258,30 @@ def uniqueHusbandName():
 def uniqueWifeName():
     return TEST_WIFE_NAME
 '''
+    
+'''                
+def us06(divorce_date, husband_death, wife_death):
+    "Marriage should occur before death of either spouse"
+    if not divorce_date or not (husband_death, wife_death):
+        return False
+'''    
+ 
+def us02(marriage_date, husband_birth, wife_birth):
+    "Birth should occur before marriage of an individual"
+    if not marriage_date:
+        return False
+    test = True
+    md = datetime(int(marriage_date[2]), int(MONTHS[marriage_date[1]]), int(marriage_date[0]))
+    if(husband_birth):
+        hb = datetime(int(husband_birth[2]), int(MONTHS[husband_birth[1]]), int(husband_birth[0]))
+        test *= hb < md
+    if(wife_birth):
+        wb = datetime(int(wife_birth[2]), int(MONTHS[wife_birth[1]]), int(wife_birth[0]))
+        test *= wb < md
+    return test
+
+
+
                 
 def us09(mother_death, father_death, child_birth): #AUSTIN
     ''' Child born after mother deaths and before 9 months of fathers death'''
