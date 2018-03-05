@@ -4,6 +4,7 @@ from sqlite3 import Error;
 from shutil import copyfile
 from datetime import datetime
 from prettytable import PrettyTable
+from asn1crypto._ffi import null
 
 MONTHS = {'JAN': '01', 'FEB': '02', 'MAR': '03', 'APR': '04', 'MAY': '05', 'JUN': '06', 'JUL': '07', 'AUG': '08', 'SEP' : '09', 'OCT': '10', 'NOV': '11', 'DEC': '12'}
 LEVELS = {'INDI':'0', 'NAME':'1', 'SEX':'1', 'BIRT':'1', 'DEAT':'1', 'FAMC':'1', 'FAMS':'1', 'FAM':'0', 'MARR':'1', 'HUSB':'1', 'WIFE':'1', 'CHIL':'1', 'DIV':'1', 'DATE':'2', 'HEAD':'0', 'TRLR':'0', 'NOTE':'0'}
@@ -73,8 +74,8 @@ def read(file):
     output.close()
     return output
 
-def tables(file):
-    conn = sqlite3.connect(file.replace(EXTENSION, '.sqlite3'))
+def tables(database):
+    conn = sqlite3.connect(database)
     cursor = conn.cursor()
     
     print("\nGedcom Data - Individuals:\n")
@@ -99,21 +100,21 @@ def tables(file):
     print(table)
     cursor.close()
 
-def database(file):
-    gedcom = open(file,'r')
+def database(gedcom, database):
+    file = open(gedcom,'r')
     lastLevel = 0
     familyTime, Divorced, Alive = False, False, True
     id, Name, Gender, Birthday, Age, Death, Child, Spouse, ID, Married, Husband_ID, Husband_Name, Wife_ID, Children, Wife_Name, dateType = ('None',)*16
     
     try:
-        os.remove(os.getcwd()+'/'+file.replace(EXTENSION, '.sqlite3'))
+        os.remove(os.getcwd()+'/'+database)
     except:
         pass
     
-    if not os.path.exists(file.replace(EXTENSION, '.sqlite3')):
-        copyfile(os.getcwd()+"/template.sqlite3", os.getcwd()+'/'+file.replace(EXTENSION, '.sqlite3'))
+    if not os.path.exists(database):
+        copyfile(os.getcwd()+"/template.sqlite3", os.getcwd()+'/'+database)
     
-    for line in gedcom:
+    for line in file:
         data = line.split(' ')
         level = data[0].rstrip()
 
@@ -122,7 +123,7 @@ def database(file):
                 Age = int(Death[2]) - int(Birthday[2])
             elif (Birthday != 'None'):
                 Age = datetime.now().year - int(Birthday[2])
-            db = sqlite3.connect(file.replace(EXTENSION, '.sqlite3'))
+            db = sqlite3.connect(database)
             cursor = db.cursor()
             cursor.execute('''INSERT INTO Individuals(Name,Gender,Birthday,Age,Alive,Death,Child,Spouse,ID)
                   VALUES(?,?,?,?,?,?,?,?,?);''', (str(Name), str(Gender), str(Birthday), str(Age), str(Alive), str(Death), str(Child), str(Spouse), str(id)))
@@ -168,7 +169,7 @@ def database(file):
             
         if (familyTime):
             if (level == "0" and lastLevel == "1" and (Husband_ID != 'None' or Wife_ID != 'None')):
-                db = sqlite3.connect(file.replace(EXTENSION, '.sqlite3'))
+                db = sqlite3.connect(database)
                 cursor = db.cursor()
                 cursor.execute("SELECT Name FROM Individuals WHERE ID = '"+Wife_ID+"'")
                 Wife_Name = cursor.fetchone()[0]
@@ -281,8 +282,9 @@ def us02(marriage_date, husband_birth, wife_birth):
     return test
 
 
+def us09_test(file):
+    return null
 
-                
 def us09(mother_death, father_death, child_birth): #AUSTIN
     ''' Child born after mother deaths and before 9 months of fathers death'''
     if not child_birth or not (mother_death and father_death):
@@ -309,6 +311,7 @@ def queryDict(db, table, id, tag):
     return cur.fetchone()[0]
 
 if __name__ == '__main__':
-    gedcom = file()
-    database(gedcom)
-    tables(gedcom)
+    ged = file()
+    db = ged.replace(EXTENSION, '.sqlite3')
+    database(ged, db)
+    tables(db)
