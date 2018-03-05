@@ -105,6 +105,11 @@ def database(file):
     familyTime, Divorced, Alive = False, False, True
     id, Name, Gender, Birthday, Age, Death, Child, Spouse, ID, Married, Husband_ID, Husband_Name, Wife_ID, Children, Wife_Name, dateType = ('None',)*16
     
+    try:
+        os.remove(os.getcwd()+'/'+file.replace(EXTENSION, '.sqlite3'))
+    except:
+        pass
+    
     if not os.path.exists(file.replace(EXTENSION, '.sqlite3')):
         copyfile(os.getcwd()+"/template.sqlite3", os.getcwd()+'/'+file.replace(EXTENSION, '.sqlite3'))
     
