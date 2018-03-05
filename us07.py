@@ -3,7 +3,7 @@ LEVELS = {'INDI':'0', 'NAME':'1', 'SEX':'1', 'BIRT':'1', 'DEAT':'1', 'FAMC':'1',
 
 def us07(Children):
     '''Check to see if there are fifteen siblings, 15 kids is ridiculous'''
-    amountChildren = True
     for l in line:
         if len(Children) >= 15:
-            amountChildren = False
+            return False
+    return True
