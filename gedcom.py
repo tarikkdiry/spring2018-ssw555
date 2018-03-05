@@ -1,26 +1,33 @@
 import os;
 import sqlite3;
 from sqlite3 import Error;
+from shutil import copyfile
+from datetime import datetime
 from prettytable import PrettyTable
-INPUT_EXTENSION = '.ged'
-OUTPUT_EXTENSION = '.txt'
-TAGS = ['INDI', 'NAME', 'SEX', 'BIRT', 'DEAT', 'FAMC', 'FAMS', 'FAM', 'MARR', 'HUSB', 'WIFE', 'CHIL', 'DIV', 'DATE', 'HEAD', 'TRLR', 'NOTE']
+
+MONTHS = {'JAN': '01', 'FEB': '02', 'MAR': '03', 'APR': '04', 'MAY': '05', 'JUN': '06', 'JUL': '07', 'AUG': '08', 'SEP' : '09', 'OCT': '10', 'NOV': '11', 'DEC': '12'}
 LEVELS = {'INDI':'0', 'NAME':'1', 'SEX':'1', 'BIRT':'1', 'DEAT':'1', 'FAMC':'1', 'FAMS':'1', 'FAM':'0', 'MARR':'1', 'HUSB':'1', 'WIFE':'1', 'CHIL':'1', 'DIV':'1', 'DATE':'2', 'HEAD':'0', 'TRLR':'0', 'NOTE':'0'}
+TAGS = LEVELS.keys()
+EXTENSION = '.ged'
+
+'''
+#TARIK + OSCAR TEST STUFF
 TEST_ID = True
 TEST_HUSBAND_NAME = True
 TEST_WIFE_NAME = True
 TEST_HUSBAND_ID = True
 TEST_WIFE_ID = True
 TEST_MARRAGE_VALID = True
+'''
 
 def file():
     geds = []
     for file in os.listdir(os.path.dirname(os.path.realpath(__file__))):
-        if file.endswith(INPUT_EXTENSION):
+        if file.endswith(EXTENSION):
             geds.append(file)
     if(len(geds) <= 1):
         if(len(geds) == 0):
-            print("NO FILE FOUND: Place "+INPUT_EXTENSION+" in same folder as python script.")
+            print("NO FILE FOUND: Place "+EXTENSION+" in same folder as python script.")
         return geds[0]
     else:
         print("Files in Local Directory: ")
@@ -29,15 +36,15 @@ def file():
         print('\n')
         while(True):
             name = input("Enter desired GEDCOM file name: ")
-            if not INPUT_EXTENSION in name:
-                name += INPUT_EXTENSION
+            if not EXTENSION in name:
+                name += EXTENSION
             if name in geds:
                 return name
             print("FILE NAME NOT FOUND, TRY AGAIN.\n")
 
 def read(file):
     gedcom = open(file,'r')
-    output = open(file.replace(INPUT_EXTENSION, OUTPUT_EXTENSION),'w')
+    output = open(file.replace(EXTENSION, '.txt'),'w')
     for line in gedcom:
         id = None
         output.write("--> " + line.rstrip() + "\n")
@@ -56,87 +63,83 @@ def read(file):
             valid = 'Y'
         else:
             valid = 'N'
-
-        output.write("<-- " + level + "|" + tag + "|" + valid + "|" + arguments + "\n")
+        
+        str = "<-- " + level + "|" + tag + "|" + valid + "|" + arguments + "\n"
+        
+        output.write(str)
+        print(str.rstrip())
 
     gedcom.close()
     output.close()
-
-    output = open(file.replace(INPUT_EXTENSION, OUTPUT_EXTENSION),'r')
-    print('')
-    for line in output:
-        print(line.rstrip())
-    output.close()
     return output
 
-# def save(file):
-#    return 0
+def tables(file):
+    conn = sqlite3.connect(file.replace(EXTENSION, '.sqlite3'))
+    cursor = conn.cursor()
+    
+    print("\nGedcom Data - Individuals:\n")
+    
+    table = PrettyTable(["ID", "Name", "Gender", "Birthday", "Age", "Alive", "Death", "Child", "Spouse"])
+    cursor.execute('SELECT * from Individuals')
+    row = cursor.fetchone()
+    while row is not None:
+        table.add_row(row)
+        row = cursor.fetchone()
+        
+    print(table)
+    print("\nGedcom Data - Families:\n")
+    
+    table = PrettyTable(['ID', 'Married', 'Divorced', 'Husband_ID', 'Husband_Name', 'Wife_ID', 'Wife_Name', 'Children'])
+    cursor.execute('SELECT * from Families')
+    row = cursor.fetchone()
+    while row is not None:
+        table.add_row(row)
+        row = cursor.fetchone()
 
-'''
-So far, does not check for duplicates
-'''
-def Database(file):
+    print(table)
+    cursor.close()
+
+def database(file):
     gedcom = open(file,'r')
     lastLevel = 0
-    familyTime = False
-    Name = ["NULL"]
-    Gender = ["NULL"]
-    Birthday = ["NULL"]
-    Age = ["NULL"]
-    Alive = True
-    Death =  ["NULL"]
-    Child = ["NULL"]
-    Spouse = ["NULL"]
-    dateType = ["NULL"]
-    id = ["NULL"]
-
-    ID = ["NULL"]
-    Married = ["NULL"]
-    Divorced = ["NULL"]
-    Husband_ID = ["NULL"]
-    Husband_Name = ["NULL"]
-    Wife_ID = ["NULL"]
-    Wife_Name = ["NULL"]
-    Children = ["NULL"]
-
+    familyTime, Divorced, Alive = False, False, True
+    id, Name, Gender, Birthday, Age, Death, Child, Spouse, ID, Married, Husband_ID, Husband_Name, Wife_ID, Children, Wife_Name, dateType = ('None',)*16
+    
+    if not os.path.exists(file.replace(EXTENSION, '.sqlite3')):
+        copyfile(os.getcwd()+"/template.sqlite3", os.getcwd()+'/'+file.replace(EXTENSION, '.sqlite3'))
+    
     for line in gedcom:
         data = line.split(' ')
         level = data[0].rstrip()
 
-        # BUG: need a way to start an unload without missing data
-        if (level == "0" and lastLevel == "1" and Gender != ["NULL"] and familyTime == False):
+        if (level == "0" and lastLevel == "1" and Gender != 'None' and familyTime == False):
             if Alive == False:
                 Age = int(Death[2]) - int(Birthday[2])
-            elif (Birthday != ["NULL"]):
-                Age = 2018 - int(Birthday[2])
-
-            db = sqlite3.connect("database.sqlite3")
+            elif (Birthday != 'None'):
+                Age = datetime.now().year - int(Birthday[2])
+            db = sqlite3.connect(file.replace(EXTENSION, '.sqlite3'))
             cursor = db.cursor()
             cursor.execute('''INSERT INTO Individuals(Name,Gender,Birthday,Age,Alive,Death,Child,Spouse,ID)
                   VALUES(?,?,?,?,?,?,?,?,?);''', (str(Name), str(Gender), str(Birthday), str(Age), str(Alive), str(Death), str(Child), str(Spouse), str(id)))
-
-
             db.commit()
             db.close()
             Alive = True
-            Birthday = ["NULL"]
-            Death = ["NULL"]
-            Child = ["NULL"]
-        if (level == "0"):
-            if ('FAM') in line:
-                familyTime = True
+            Birthday, Death, Child = ('None',)*3
+            
+        if (level == "0") and ('FAM') in line:
+            familyTime = True
 
-        if (familyTime == False):
+        if (not familyTime):
 #         #this is for individuals only, must make different one for fam
             if ('INDI') in line:
-                id = [data[1].rstrip()]
+                id = data[1].rstrip().replace('@', '')
             if ('FAMS') in line:
-                Spouse = data[2].rstrip()
+                Spouse = data[2].rstrip().replace('@', '')    
             if ('FAMC') in line:
-                if (Child == ["NULL"]):
-                    Child = data[2].rstrip()
+                if (Child == 'None'):
+                    Child = data[2].rstrip().replace('@', '')
                 else:
-                    Child = Child + data[2].rstrip()
+                    Child = Child + data[2].rstrip().replace('@', '')
             if ('NAME') in line:
                 Name = data[2:]
                 if (len(data[2:]) > 1):
@@ -146,84 +149,69 @@ def Database(file):
             if dateType == 'BIRT':
                 Birthday = data[2:]
                 Birthday = Birthday[:2] + [Birthday[2].rstrip('\n')]
-                dateType = ["NULL"]
+                dateType = 'None'
             if dateType == 'DEAT':
                 Death = data[2:]
                 Death = Death[:2] + [Death[2].rstrip('\n')]
                 Alive = False
-                dateType = ["NULL"]
+                dateType = 'None'
             if ('BIRT') in line:
                 dateType = 'BIRT'
             if ('DEAT') in line:
                 dateType = 'DEAT'
-
             lastLevel = level
-
-        ### Getting the Wife and Husband Name still not working
-        if (familyTime == True):
-            if (level == "0" and lastLevel == "1" and (Husband_ID != ["NULL"] or Wife_ID != ["NULL"])):
-                db = sqlite3.connect("database.sqlite3")
+            
+        if (familyTime):
+            if (level == "0" and lastLevel == "1" and (Husband_ID != 'None' or Wife_ID != 'None')):
+                db = sqlite3.connect(file.replace(EXTENSION, '.sqlite3'))
                 cursor = db.cursor()
-                cursor.execute('''SELECT Name FROM Individuals WHERE ID =?''', (Husband_ID))
-                Husband_Name = cursor.fetchall()
-                #This print statement is used for testing if it is correctly pulling from the database
-                #print (cursor.fetchall())
-
-                cursor.execute('''SELECT Name FROM Individuals WHERE ID =?''', (Wife_ID))
-                Wife_Name = cursor.fetchall()
-                #print (cursor.fetchall())
-
+                cursor.execute("SELECT Name FROM Individuals WHERE ID = '"+Wife_ID+"'")
+                Wife_Name = cursor.fetchone()[0]
+                cursor.execute("SELECT Name FROM Individuals WHERE ID = '"+Husband_ID+"'")
+                Husband_Name = cursor.fetchone()[0]
                 cursor.execute('''INSERT INTO Families(ID,Married,Divorced,Husband_ID,Husband_Name,Wife_ID,Wife_Name,Children)
                       VALUES(?,?,?,?,?,?,?,?);''', (str(ID), str(Married), str(Divorced), str(Husband_ID), str(Husband_Name), str(Wife_ID), str(Wife_Name), str(Children)))
-
                 db.commit()
                 db.close()
-                ID = ["NULL"]
-                Married = ["NULL"]
-                Divorced = ["NULL"]
-                Husband_ID = ["NULL"]
-                Husband_Name = ["NULL"]
-                Wife_ID = ["NULL"]
-                Wife_Name = ["NULL"]
-                Children = ["NULL"]
+                Divorced = False;
+                ID, Married, Husband_ID, Husband_Name, Wife_ID, Wife_Name, Children = ('None',)*7
             if ('FAM') in line:
-                ID = [data[1].rstrip()]
+                ID = data[1].rstrip().replace('@', '')
             if ('HUSB') in line:
-                Husband_ID = [data[2].rstrip()]
+                Husband_ID = data[2].rstrip().replace('@', '')
+                Husband_Name = 'TEMP'
             if ('WIFE') in line:
-                Wife_ID = [data[2].rstrip()]
+                Wife_ID = data[2].rstrip().replace('@', '')
+                Wife_Name = 'TEMP'
             if ('CHIL') in line:
-                #put children in one array i guess (fix afterwards)
-                if (Children == ["NULL"]):
-                    Children = [data[2].rstrip()]
+                if (Children == 'None'):
+                    Children = [data[2].rstrip().replace('@', '')]
                 else:
-                    Children = Children + [data[2].rstrip()]
+                    Children += [data[2].rstrip().replace('@', '')]
             if dateType == 'MARR':
                 Married = data[2:]
                 Married = Married[:2] + [Married[2].rstrip('\n')]
-                dateType = ["NULL"]
+                dateType = 'None'
             if ('MARR') in line:
                 dateType = 'MARR'
+            if ('DIV') in line:
+                Divorced = True
 
+'''
+            #TARIK TEST STUFF
             #Sets are unique, if the len of the set ID isn't the same as len of list ID, not all are unique
             if len(id) > len(set(id)):
                 TEST_ID = False
-
             if len(Husband_Name) > len(set(Husband_Name)):
                 TEST_HUSBAND_NAME = False
-
             if len(Wife_Name) > len(set(Wife_Name)):
                 TEST_WIFE_NAME = False
-
             if len(Husband_ID) > len(set(Husband_ID)):
                 TEST_HUSBAND_ID = False
-
             if len(Wife_ID) > len(set(Wife_ID)):
-                TEST_WIFE_ID = False
-             
-            #MORE TESTS
-             
-            if Married != ["NULL"]:
+                TEST_Wife_ID = False
+            #OSCAR TEST STUFF
+            if Married != 'None':
                 MarriedPeople = GetFromDB('individuals', '*', 'spouse', "!= [NULL]")
                 Married_ID_Date = []
                 for x in MarriedPeople:
@@ -236,12 +224,8 @@ def Database(file):
                     if ((Gender == "F") | (GetFromDB('families', 'Married', 'Husband_ID', Married_ID_Date[0])[2] < Married_ID_Date[1])):
                         TEST_MARRAGE_VALID = False
                         break
-                    
-                    
-                
-                
-                
-                
+                        
+#OSCAR TEST STUFF            
 def GetFromDB(table, column, thisData, condition): 
     connection = sqlite3.connect('database.sqlite3')
     cursor = connection.cursor()
@@ -253,108 +237,49 @@ def GetFromDB(table, column, thisData, condition):
         row = cursor.fetchone()
     return data       
 
-#TESTING
+#TARIK TESTING STUFF
 def TAGS_SIZE(TAGS):
-    if len(TAGS) != 17:
-        return False
-    return True
-
+    return len(TAGS) == 17
 def LEVELS_SIZE(LEVELS):
-    if len(LEVELS) != 17:
-        return False
-    return True
-
+    return len(LEVELS) == 17
 def uniqueID():
-    if TEST_ID == True:
-        return True
-    return False
-
+    return TEST_ID
 def uniqueHusbandID():
-    if TEST_HUSBAND_ID == True:
-        return True
-    return False
-
+    return TEST_HUSBAND_ID
 def uniqueWifeID():
-    if TEST_WIFE_ID == True:
-        return True
-    return False
-
+    return TEST_WIFE_ID
 def uniqueHusbandName():
-    if TEST_HUSBAND_NAME == True:
-        return True
-    return False
-
+    return TEST_HUSBAND_NAME
 def uniqueWifeName():
-    if TEST_WIFE_NAME == True:
-        return True
-    return False
+    return TEST_WIFE_NAME
+'''
+                
+def us09(mother_death, father_death, child_birth): #AUSTIN
+    ''' Child born after mother deaths and before 9 months of fathers death'''
+    if not child_birth or not (mother_death and father_death):
+        return False
+    cb = datetime(int(child_birth[2]), int(MONTHS[child_birth[1]]), int(child_birth[0]))
+    md = datetime(int(mother_death[2]), int(MONTHS[mother_death[1]]), int(mother_death[0]))
+    fd = datetime(int(father_death[2]), int(MONTHS[father_death[1]]), int(father_death[0]))
+    if(father_death and not mother_death):
+        return ((fd.year - cb.year) * 12 + fd.month - cb.month) >= 9
+    elif(mother_death and not father_death):
+        return md > cb
+    return md > cb and ((fd.year - cb.year) * 12 + fd.month - cb.month) >= 9
 
-def marrageAfterBirth():
-    if TEST_MARRAGE_VALID == True:
-        return True
-    return False
-
-def marrageExist():
-    connection = sqlite3.connect('database.sqlite3')
-    cursor = connection.cursor()
-    cursor.execute('''SELECT Married FROM Families''')
-    return cursor.fetchone()
+#NOT FINISHED
+def us21(gender, spose_gender): #AUSTIN
+    ''' Husband is male, wife is female '''
+    return (gender.upper()+spose_gender.upper()) in {'MF', 'FM'};
     
-def husbandExist():
-    connection = sqlite3.connect('database.sqlite3')
-    cursor = connection.cursor()
-    cursor.execute('''SELECT Husband_ID FROM Families''')
-    return cursor.fetchone()
+def queryDict(db, table, id, tag):
+    con = sqlite3.connect(db)
+    con.row_factory = lambda c, r: dict(zip([col[0] for col in c.description], r))
+    cur = con.cursor()
+    cur.execute("SELECT "+tag+" FROM "+table+" WHERE ID = '"+id+"'")
+    return cur.fetchone()[0]
 
-def wifeExist():
-    connection = sqlite3.connect('database.sqlite3')
-    cursor = connection.cursor()
-    cursor.execute('''SELECT Wife_ID FROM Families''')
-    return cursor.fetchone()
-
-def familyUnique():
-    connection = sqlite3.connect('database.sqlite3')
-    cursor = connection.cursor()
-    cursor.execute('''SELECT ID FROM Families''')
-    return cursor.fetchone()
-
-#END TESTING
-
-def printTable(database):
-
-    connection = sqlite3.connect(database)
-    cursor = connection.cursor()
-    print("Gedcom Data - Individuals:")
-    print('-'*40)
-
-    x = PrettyTable(["ID", "Name", "Gender", "Birthday", "Age", "Alive", "Death", "Child", "Spouse"])
-    #x.set_field_align("ID", "l")
-    #x.set_padding_width(1)
-
-    cursor.execute('SELECT * from Individuals')
-    row = cursor.fetchone()
-    while row is not None:
-        x.add_row(row)
-        row = cursor.fetchone()
-
-    print(x)
-    print("=" * 40)
-    print("Gedcom Data - Families:")
-    print('-'*40)
-
-    x = PrettyTable(['ID', 'Married', 'Divorced', 'Husband_ID', 'Husband_Name', 'Wife_ID', 'Wife_Name', 'Children'])
-    #x.set_field_align("ID", "l")
-    #x.set_padding_width(1)
-
-    cursor.execute('SELECT * from Families')
-    row = cursor.fetchone()
-    while row is not None:
-        x.add_row(row)
-        row = cursor.fetchone()
-
-    print(x)
-    cursor.close()
 if __name__ == '__main__':
-    #read(file())
-    Database("sample_arocha.ged")
-    printTable('database.sqlite3')
+    gedcom = file()
+    database(gedcom)
+    tables(gedcom)

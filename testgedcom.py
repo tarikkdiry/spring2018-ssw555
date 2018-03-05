@@ -39,8 +39,7 @@ class Test(unittest.TestCase):
         self.assertNotEqual(gedcom.wifeExist(), ["NULL"])
     
     def test_familyUnique(self):
-        self.assertNotEqual(gedcom.familyUnique(), ["NULL"])   
-    
+        self.assertNotEqual(gedcom.familyUnique(), ["NULL"])
     
 if __name__ == "__main__":
     unittest.main()
