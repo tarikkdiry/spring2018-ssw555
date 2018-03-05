@@ -4,7 +4,6 @@ from sqlite3 import Error;
 from shutil import copyfile
 from datetime import datetime
 from prettytable import PrettyTable
-from asn1crypto._ffi import null
 
 MONTHS = {'JAN': '01', 'FEB': '02', 'MAR': '03', 'APR': '04', 'MAY': '05', 'JUN': '06', 'JUL': '07', 'AUG': '08', 'SEP' : '09', 'OCT': '10', 'NOV': '11', 'DEC': '12'}
 LEVELS = {'INDI':'0', 'NAME':'1', 'SEX':'1', 'BIRT':'1', 'DEAT':'1', 'FAMC':'1', 'FAMS':'1', 'FAM':'0', 'MARR':'1', 'HUSB':'1', 'WIFE':'1', 'CHIL':'1', 'DIV':'1', 'DATE':'2', 'HEAD':'0', 'TRLR':'0', 'NOTE':'0'}
@@ -260,19 +259,33 @@ def uniqueWifeName():
     return TEST_WIFE_NAME
 '''
     
-'''                
+'''          
 def us06(divorce_date, husband_death, wife_death):
     "Marriage should occur before death of either spouse"
     if not divorce_date or not (husband_death, wife_death):
         return False
 '''    
- 
-def us02(marriage_date, husband_birth, wife_birth):
+import ast
+
+def us02(db, marriage_date, individual_ID): #Oscar
     "Birth should occur before marriage of an individual"
     if not marriage_date:
         return False
-    test = True
+    query = queryDict(db, "Individuals", individual_ID, "Birthday")['Birthday']
+    query = ''.join(c for c in query if c not in " (){}<>[]''")
+    query = query.split(',')
+    ib = datetime(int(query[2]), int(MONTHS[query[1]]), int(query[0]))
     md = datetime(int(marriage_date[2]), int(MONTHS[marriage_date[1]]), int(marriage_date[0]))
+    return md < ib
+    
+
+def us10(marriage_date, husband_birth, wife_birth): #Oscar
+    """Marriage should be at least 14 years after birth of both spouses 
+       (parents must be at least 14 years old)"""
+    if not marriage_date:
+        return False
+    test = True
+    md = datetime(int(marriage_date[2]) - 14, int(MONTHS[marriage_date[1]]), int(marriage_date[0]))
     if(husband_birth):
         hb = datetime(int(husband_birth[2]), int(MONTHS[husband_birth[1]]), int(husband_birth[0]))
         test *= hb < md
@@ -280,7 +293,6 @@ def us02(marriage_date, husband_birth, wife_birth):
         wb = datetime(int(wife_birth[2]), int(MONTHS[wife_birth[1]]), int(wife_birth[0]))
         test *= wb < md
     return test
-
 
 def us09_test(file):
     return null
@@ -308,10 +320,11 @@ def queryDict(db, table, id, tag):
     con.row_factory = lambda c, r: dict(zip([col[0] for col in c.description], r))
     cur = con.cursor()
     cur.execute("SELECT "+tag+" FROM "+table+" WHERE ID = '"+id+"'")
-    return cur.fetchone()[0]
+    return cur.fetchone()
 
 if __name__ == '__main__':
     ged = file()
     db = ged.replace(EXTENSION, '.sqlite3')
     database(ged, db)
     tables(db)
+    print (us02(db,  ['1', 'JAN', '1900'] , "I2"))
