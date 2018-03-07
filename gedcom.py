@@ -9,107 +9,6 @@ from prettytable import PrettyTable
 
 MONTHS = {'JAN': '01', 'FEB': '02', 'MAR': '03', 'APR': '04', 'MAY': '05', 'JUN': '06', 'JUL': '07', 'AUG': '08', 'SEP' : '09', 'OCT': '10', 'NOV': '11', 'DEC': '12'}
 
-'''
-#TARIK + OSCAR TEST STUFF
-TEST_ID = True
-TEST_HUSBAND_NAME = True
-TEST_WIFE_NAME = True
-TEST_HUSBAND_ID = True
-TEST_WIFE_ID = True
-TEST_MARRAGE_VALID = True
-
-            #TARIK TEST STUFF
-            #Sets are unique, if the len of the set ID isn't the same as len of list ID, not all are unique
-            if len(id) > len(set(id)):
-                TEST_ID = False
-            if len(Husband_Name) > len(set(Husband_Name)):
-                TEST_HUSBAND_NAME = False
-            if len(Wife_Name) > len(set(Wife_Name)):
-                TEST_WIFE_NAME = False
-            if len(Husband_ID) > len(set(Husband_ID)):
-                TEST_HUSBAND_ID = False
-            if len(Wife_ID) > len(set(Wife_ID)):
-                TEST_Wife_ID = False
-            #OSCAR TEST STUFF
-            if Married != 'None':
-                MarriedPeople = GetFromDB('individuals', '*', 'spouse', "!= [NULL]")
-                Married_ID_Date = []
-                for x in MarriedPeople:
-                    Married_ID_Date = ([x[0],x[1]])
-                    Gender = x[2]
-                    if ((Gender == "M") | (GetFromDB('families', 'Married', 'Husband_ID', Married_ID_Date[0])[2] < Married_ID_Date[1])):
-                        TEST_MARRAGE_VALID = False
-                        break
-                        
-                    if ((Gender == "F") | (GetFromDB('families', 'Married', 'Husband_ID', Married_ID_Date[0])[2] < Married_ID_Date[1])):
-                        TEST_MARRAGE_VALID = False
-                        break
-                        
-#OSCAR TEST STUFF            
-def GetFromDB(table, column, thisData, condition): 
-    connection = sqlite3.connect('database.sqlite3')
-    cursor = connection.cursor()
-    cursor.execute('SELECT '+ column +' from ' + table + ' where' + thisData + + condition )
-    row = cursor.fetchone()
-    data = []
-    while row is not None:
-        data.append(row)
-        row = cursor.fetchone()
-    return data       
-
-#TARIK TESTING STUFF
-def TAGS_SIZE(TAGS):
-    return len(TAGS) == 17
-def LEVELS_SIZE(LEVELS):
-    return len(LEVELS) == 17
-def uniqueID():
-    return TEST_ID
-def uniqueHusbandID():
-    return TEST_HUSBAND_ID
-def uniqueWifeID():
-    return TEST_WIFE_ID
-def uniqueHusbandName():
-    return TEST_HUSBAND_NAME
-def uniqueWifeName():
-    return TEST_WIFE_NAME
-     
-def us06(divorce_date, husband_death, wife_death):
-    "Marriage should occur before death of either spouse"
-    if not divorce_date or not (husband_death, wife_death):
-        return False
-
-
-def us02(db, marriage_date, individual_ID): #Oscar
-    "Birth should occur before marriage of an individual"
-    if not marriage_date:
-        return False
-    query = queryDict(db, "Individuals", individual_ID, "Birthday")['Birthday']
-    if(query == "None"):
-        return False
-    query = ''.join(c for c in query if c not in " (){}<>[]''")
-    query = query.split(',')
-    ib = datetime(int(query[2]), int(MONTHS[query[1]]), int(query[0]))
-    md = datetime(int(marriage_date[2]), int(MONTHS[marriage_date[1]]), int(marriage_date[0]))
-    return md < ib
-    
-
-def us10(marriage_date, husband_birth, wife_birth): #Oscar
-    """Marriage should be at least 14 years after birth of both spouses 
-       (parents must be at least 14 years old)"""
-    if not marriage_date:
-        return False
-    test = True
-    md = datetime(int(marriage_date[2]) - 14, int(MONTHS[marriage_date[1]]), int(marriage_date[0]))
-    if(husband_birth):
-        hb = datetime(int(husband_birth[2]), int(MONTHS[husband_birth[1]]), int(husband_birth[0]))
-        test *= hb < md
-    if(wife_birth):
-        wb = datetime(int(wife_birth[2]), int(MONTHS[wife_birth[1]]), int(wife_birth[0]))
-        test *= wb < md
-    return test
-'''
-
-
 def us02_helper(marriage_date, individual_birth):
     if not marriage_date or not individual_birth:
         return False
@@ -214,6 +113,16 @@ def us22(ind, fam, dict): #Tarik
     ''' Unique Individual and Family IDs '''
     return len(ind) == len(set(ind)) and len(fam) == len(set(fam))
 
+def us23_helper(name, birthday):
+    return name[0]+' '+name[1]+' : '+birthday[0]+' '+birthday[1]+' '+birthday[2]
+
+def us23(ind, fam, dict): #Austin
+    ''' Unique Names and Birthdays'''
+    unique = []
+    for i in ind:
+        unique.append(us23_helper(dict[i]['Name'], dict[i]['Birthday']))
+    return len(unique) == len(set(unique))
+
 def us29_helper(individual, alive):
     if not alive:
         return individual
@@ -257,4 +166,5 @@ if __name__ == '__main__':
     print(us21(ind, fam, dict))
     print(us09(ind, fam, dict))
     print(us29(ind, fam, dict))
+    
     gedcomDatabase.tables(db)
