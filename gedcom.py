@@ -1,4 +1,5 @@
 import os;
+import ast
 import sqlite3;
 from sqlite3 import Error;
 from shutil import copyfile
@@ -264,8 +265,83 @@ def us06(divorce_date, husband_death, wife_death):
     "Marriage should occur before death of either spouse"
     if not divorce_date or not (husband_death, wife_death):
         return False
-'''    
-import ast
+'''
+    
+def query(db, tag, table, id='None'):
+    if(table not in {'Individuals', 'Families'}):
+        raise ValueError
+    con = sqlite3.connect(db)
+    #con.row_factory = lambda c, r: dict(zip([col[0] for col in c.description], r))
+    cur = con.cursor()
+    if(id != 'None'):
+        cur.execute("SELECT "+tag+" FROM "+table+" WHERE ID = '"+id+"'")
+    else:
+        cur.execute("SELECT "+tag+" FROM "+table)
+    fetch = cur.fetchall()
+    
+    if(len(fetch) == 1 and fetch[0][0] == 'None'):
+        fetch[0] = (False,)
+        
+    return fetch
+    
+def dictify(db):
+    Individuals, Families = [], [];
+    Dictionary = {}
+
+    for id in query(db, 'ID', 'Families'):
+        Families.append(id[0])
+        
+    for id in query(db, 'ID', 'Individuals'):
+        Individuals.append(id[0])
+    
+    for id in Families:
+        Dictionary[id] = {}
+        try:
+            Dictionary[id]['Married'] = ast.literal_eval(query(db, 'Married', 'Families', id)[0][0])
+        except:
+            Dictionary[id]['Married'] = query(db, 'Married', 'Families', id)[0][0]
+        Dictionary[id]['Divorced'] = query(db, 'Divorced', 'Families', id)[0][0] == 'True'
+        Dictionary[id]['Husband_ID'] = query(db, 'Husband_ID', 'Families', id)[0][0]
+        Dictionary[id]['Wife_ID'] = query(db, 'Wife_ID', 'Families', id)[0][0]
+        try:
+            Dictionary[id]['Children'] = ast.literal_eval(query(db, 'Children', 'Families', id)[0][0])
+        except:
+            Dictionary[id]['Children'] = query(db, 'Children', 'Families', id)[0][0]
+        
+    for id in Individuals:
+        Dictionary[id] = {}
+        try:
+            Dictionary[id]['Name'] = ast.literal_eval(query(db, 'Name', 'Individuals', id)[0][0])
+        except:
+            Dictionary[id]['Name'] = query(db, 'Name', 'Individuals', id)[0][0]
+        Dictionary[id]['Gender'] = query(db, 'Gender', 'Individuals', id)[0][0]
+        try:
+            Dictionary[id]['Birthday'] = ast.literal_eval(query(db, 'Birthday', 'Individuals', id)[0][0])
+        except:
+            Dictionary[id]['Birthday'] = query(db, 'Birthday', 'Individuals', id)[0][0]
+        try:
+            Dictionary[id]['Age'] = int(query(db, 'Age', 'Individuals', id)[0][0])
+        except:
+            Dictionary[id]['Age'] = query(db, 'Age', 'Individuals', id)[0][0]
+        Dictionary[id]['Alive'] = query(db, 'Alive', 'Individuals', id)[0][0] == 'True'
+        try:
+            Dictionary[id]['Death'] = ast.literal_eval(query(db, 'Death', 'Individuals', id)[0][0])
+        except:
+            Dictionary[id]['Death'] = query(db, 'Death', 'Individuals', id)[0][0]
+        Dictionary[id]['Child'] = query(db, 'Child', 'Individuals', id)[0][0]
+        Dictionary[id]['Spouse'] = query(db, 'Spouse', 'Individuals', id)[0][0]
+        
+    return (Individuals, Families, Dictionary)
+
+
+
+
+
+
+
+
+
+
 
 def us02(db, marriage_date, individual_ID): #Oscar
     "Birth should occur before marriage of an individual"
@@ -296,36 +372,60 @@ def us10(marriage_date, husband_birth, wife_birth): #Oscar
         test *= wb < md
     return test
 
-def us09_test(file):
-    return null
+
 
 def us09(mother_death, father_death, child_birth): #AUSTIN
     ''' Child born after mother deaths and before 9 months of fathers death'''
-    if not child_birth or not (mother_death and father_death):
+    if not child_birth:
         return False
+    elif not (mother_death and father_death):
+        return True
+    
     cb = datetime(int(child_birth[2]), int(MONTHS[child_birth[1]]), int(child_birth[0]))
-    md = datetime(int(mother_death[2]), int(MONTHS[mother_death[1]]), int(mother_death[0]))
-    fd = datetime(int(father_death[2]), int(MONTHS[father_death[1]]), int(father_death[0]))
+    
     if(father_death and not mother_death):
+        fd = datetime(int(father_death[2]), int(MONTHS[father_death[1]]), int(father_death[0]))
         return ((fd.year - cb.year) * 12 + fd.month - cb.month) >= 9
+    
     elif(mother_death and not father_death):
+        md = datetime(int(mother_death[2]), int(MONTHS[mother_death[1]]), int(mother_death[0]))
         return md > cb
+    
+    fd = datetime(int(father_death[2]), int(MONTHS[father_death[1]]), int(father_death[0]))
+    md = datetime(int(mother_death[2]), int(MONTHS[mother_death[1]]), int(mother_death[0]))
     return md > cb and ((fd.year - cb.year) * 12 + fd.month - cb.month) >= 9
 
-#NOT FINISHED
-def us21(gender, spose_gender): #AUSTIN
+def us09_test(ind, fam, dict):
+    test = True
+    for f in fam:
+        for i in dict[f]['Children']:
+            try:
+                test *= us09(dict[dict[f]['Wife_ID']]['Death'], dict[dict[f]['Husband_ID']]['Death'], dict[i]['Birthday'])
+            except:
+                return False
+    return test
+
+def us21(husband_gender, wife_gender): #AUSTIN
     ''' Husband is male, wife is female '''
-    return (gender.upper()+spose_gender.upper()) in {'MF', 'FM'};
-    
-def queryDict(db, table, id, tag):
-    con = sqlite3.connect(db)
-    con.row_factory = lambda c, r: dict(zip([col[0] for col in c.description], r))
-    cur = con.cursor()
-    cur.execute("SELECT "+tag+" FROM "+table+" WHERE ID = '"+id+"'")
-    return cur.fetchone()
+    return (husband_gender.upper()+wife_gender.upper()) == 'MF';
+
+def us21_test(ind, fam, dict):
+    test = True
+    for f in fam:
+        try:
+            test *= us21(dict[dict[f]['Husband_ID']]['Gender'], dict[dict[f]['Wife_ID']]['Gender'])
+        except:
+            return False
+    return test
+
 
 if __name__ == '__main__':
     ged = file()
     db = ged.replace(EXTENSION, '.sqlite3')
     database(ged, db)
+    
+    ind, fam, dict = dictify(db)
+    
+    print(us21_test(ind, fam, dict))
+    print(us09_test(ind, fam, dict))
     tables(db)
