@@ -210,6 +210,10 @@ def us21(ind, fam, dict): #AUSTIN
             return False
     return test
 
+def us22(ind, fam, dict): #Tarik
+    ''' Unique Individual and Family IDs '''
+    return len(ind) == len(set(ind)) and len(fam) == len(set(fam))
+
 def us29_helper(individual, alive):
     if not alive:
         return individual
