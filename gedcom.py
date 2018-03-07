@@ -141,7 +141,7 @@ def us29(ind, fam, dict): #AUSTIN
 def us34_helper(marriage_date, husband_birth, wife_birth):
     if not marriage_date or not (husband_birth or wife_birth):
         return False
-    md = datetime(int(marriage_date[2]) - 14, int(MONTHS[marriage_date[1]]), int(marriage_date[0]))
+    md = datetime(int(marriage_date[2]), int(MONTHS[marriage_date[1]]), int(marriage_date[0]))
     hb = datetime(int(husband_birth[2]), int(MONTHS[husband_birth[1]]), int(husband_birth[0]))
     wb = datetime(int(wife_birth[2]), int(MONTHS[wife_birth[1]]), int(wife_birth[0]))
     return (((md.year-wb.year)*2) >= (md.year-hb.year)) or (((md.year-wb.year) <= (md.year-hb.year)*2))
