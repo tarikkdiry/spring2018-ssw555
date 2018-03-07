@@ -374,7 +374,7 @@ def us10(marriage_date, husband_birth, wife_birth): #Oscar
 
 
 
-def us09(mother_death, father_death, child_birth): #AUSTIN
+def us09_helper(mother_death, father_death, child_birth): #AUSTIN
     ''' Child born after mother deaths and before 9 months of fathers death'''
     if not child_birth:
         return False
@@ -395,37 +395,53 @@ def us09(mother_death, father_death, child_birth): #AUSTIN
     md = datetime(int(mother_death[2]), int(MONTHS[mother_death[1]]), int(mother_death[0]))
     return md > cb and ((fd.year - cb.year) * 12 + fd.month - cb.month) >= 9
 
-def us09_test(ind, fam, dict):
+def us09(ind, fam, dict):
     test = True
     for f in fam:
         for i in dict[f]['Children']:
             try:
-                test *= us09(dict[dict[f]['Wife_ID']]['Death'], dict[dict[f]['Husband_ID']]['Death'], dict[i]['Birthday'])
+                test *= us09_helper(dict[dict[f]['Wife_ID']]['Death'], dict[dict[f]['Husband_ID']]['Death'], dict[i]['Birthday'])
             except:
                 return False
     return test
 
-def us21(husband_gender, wife_gender): #AUSTIN
+def us21_helper(husband_gender, wife_gender): #AUSTIN
     ''' Husband is male, wife is female '''
     return (husband_gender.upper()+wife_gender.upper()) == 'MF';
 
-def us21_test(ind, fam, dict):
+def us21(ind, fam, dict):
     test = True
     for f in fam:
         try:
-            test *= us21(dict[dict[f]['Husband_ID']]['Gender'], dict[dict[f]['Wife_ID']]['Gender'])
+            test *= us21_helper(dict[dict[f]['Husband_ID']]['Gender'], dict[dict[f]['Wife_ID']]['Gender'])
         except:
             return False
     return test
+
+def us29_helper(individual, alive):
+    ''' Return List of Deceased '''
+    if not alive:
+        return individual
+    else:
+        return None
+
+def us29(ind, fam, dict):
+    deceased = []
+    for i in ind:
+        temp = us29_helper(i, dict[i]['Alive'])
+        if temp:
+            deceased.append(temp)
+    return deceased
+
 
 
 if __name__ == '__main__':
     ged = file()
     db = ged.replace(EXTENSION, '.sqlite3')
     database(ged, db)
-    
     ind, fam, dict = dictify(db)
     
-    print(us21_test(ind, fam, dict))
-    print(us09_test(ind, fam, dict))
+    print(us21(ind, fam, dict))
+    print(us09(ind, fam, dict))
+    print(us29(ind, fam, dict))
     tables(db)
