@@ -138,23 +138,21 @@ def us29(ind, fam, dict): #AUSTIN
             deceased.append(temp)
     return deceased
 
-def us34(marriage_date, husband_birth, wife_birth, couple):
+def us34_helper(marriage_date, husband_birth, wife_birth):
     if not marriage_date or not (husband_birth or wife_birth):
         return False
     md = datetime(int(marriage_date[2]) - 14, int(MONTHS[marriage_date[1]]), int(marriage_date[0]))
     hb = datetime(int(husband_birth[2]), int(MONTHS[husband_birth[1]]), int(husband_birth[0]))
     wb = datetime(int(wife_birth[2]), int(MONTHS[wife_birth[1]]), int(wife_birth[0]))
-    if((((md.year-wb.year)*2) >= (md.year-hb.year)) or (((md.year-wb.year) <= (md.year-hb.year)*2))):
-       return couple
-    return None
+    return (((md.year-wb.year)*2) >= (md.year-hb.year)) or (((md.year-wb.year) <= (md.year-hb.year)*2))
 
 def us34(ind, fam, dict): #Mike
     ''' List all couples who were married when the older spouse was more than twice as old as the younger spouse '''
     couples = []
     for f in fam:
-        temp = us34_helper(dict[f]['Married'], dic[dict[f]['Husband_ID']]['Birthday'], dic[dict[f]['Wife_ID']]['Birthday'], (dict[f]['Husband_ID'], dict[f]['Wife_ID']))
-        if temp:
-            couples.append(temp)
+        couple = (dict[f]['Husband_ID'], dict[f]['Wife_ID'])
+        if us34_helper(dict[f]['Married'], dic[couple[0]]['Birthday'], dic[couple[1]]['Birthday']):
+            couples.append(couple)
     return couples
 
 if __name__ == '__main__':
