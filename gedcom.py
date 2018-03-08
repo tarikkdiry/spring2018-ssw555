@@ -12,9 +12,7 @@ MONTHS = {'JAN': '01', 'FEB': '02', 'MAR': '03', 'APR': '04', 'MAY': '05', 'JUN'
 def us02_helper(marriage_date, individual_birth):
     if not marriage_date or not individual_birth:
         return False
-    ib = datetime(int(individual_birth[2]), int(MONTHS[individual_birth[1]]), int(individual_birth[0]))
-    md = datetime(int(marriage_date[2]), int(MONTHS[marriage_date[1]]), int(marriage_date[0]))
-    return md < ib
+    return int(marriage_date[2]) > int(individual_birth[2])
 
 def us02(ind, fam, dict): #Oscar
     ''' Birth should occur before marriage of an individual '''
