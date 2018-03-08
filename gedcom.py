@@ -158,7 +158,7 @@ def us34(ind, fam, dict): #Mike
     couples = []
     for f in fam:
         couple = (dict[f]['Husband_ID'], dict[f]['Wife_ID'])
-        if us34_helper(dict[f]['Married'], dic[couple[0]]['Birthday'], dic[couple[1]]['Birthday']):
+        if us34_helper(dict[f]['Married'], dict[couple[0]]['Birthday'], dict[couple[1]]['Birthday']):
             couples.append(couple)
     return couples
 
