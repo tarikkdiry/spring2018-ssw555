@@ -25,10 +25,10 @@ def us02(ind, fam, dict): #Oscar
     return test
 
 def us03_helper(birth, death):
-    if not death:
-        return True
-    elif not birth:
+    if not birth:
         return False
+    elif not death:
+        return True
     bd = datetime(int(birth[2]), int(MONTHS[birth[1]]), int(birth[0]))
     dd = datetime(int(death[2]), int(MONTHS[death[1]]), int(death[0]))
     return bd < dd
@@ -41,7 +41,7 @@ def us03(ind, fam, dict): #Mike
     return test
 
 def us07_helper(children):
-    return len(Children) < 15
+    return len(children) < 15
 
 def us07(ind, fam, dict): #Tarik
     '''Check to see if there are fifteen siblings, 15 kids is ridiculous'''
@@ -82,12 +82,12 @@ def us09(ind, fam, dict): #AUSTIN
     return test
 
 def us10_helper(marriage_date, husband_birth, wife_birth):
-    if not marriage_date or not (husband_birth or wife_birth):
+    if not marriage_date or not husband_birth or not wife_birth:
         return False
-    md = datetime(int(marriage_date[2]) - 14, int(MONTHS[marriage_date[1]]), int(marriage_date[0]))
+    md = datetime(int(marriage_date[2]), int(MONTHS[marriage_date[1]]), int(marriage_date[0]))
     hb = datetime(int(husband_birth[2]), int(MONTHS[husband_birth[1]]), int(husband_birth[0]))
     wb = datetime(int(wife_birth[2]), int(MONTHS[wife_birth[1]]), int(wife_birth[0]))
-    return hb < md and wb < md
+    return md.year-hb.year >= 14 and md.year-wb.year >= 14
 
 def us10(ind, fam, dict): #Oscar
     ''' Marriage should be at least 14 years after birth of both spouses (parents must be at least 14 years old) '''
@@ -109,9 +109,18 @@ def us21(ind, fam, dict): #AUSTIN
             return False
     return test
 
+def us22_helper(ind, fam):
+    for i in ind:
+        if not 'I' in i.upper():
+            return False
+    for f in fam:
+        if not 'F' in f.upper():
+            return False
+    return len(ind) == len(set(ind)) and len(fam) == len(set(fam))
+
 def us22(ind, fam, dict): #Tarik
     ''' Unique Individual and Family IDs '''
-    return len(ind) == len(set(ind)) and len(fam) == len(set(fam))
+    return us22_helper(ind, fam)
 
 def us23_helper(name, birthday):
     return name[0]+' '+name[1]+' : '+birthday[0]+' '+birthday[1]+' '+birthday[2]
