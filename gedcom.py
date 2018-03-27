@@ -2,11 +2,12 @@ import os
 import ast
 import sqlite3
 import gedcomDatabase
-import datetime
+import datetime as dt
 from sqlite3 import Error
 from shutil import copyfile
 from datetime import datetime
 from prettytable import PrettyTable
+from _datetime import timedelta
 
 MONTHS = {'JAN': '01', 'FEB': '02', 'MAR': '03', 'APR': '04', 'MAY': '05', 'JUN': '06', 'JUL': '07', 'AUG': '08', 'SEP' : '09', 'OCT': '10', 'NOV': '11', 'DEC': '12'}
 
@@ -92,7 +93,7 @@ def us10(ind, fam, dict): #Oscar
     ''' Marriage should be at least 14 years after birth of both spouses (parents must be at least 14 years old) '''
     test = True
     for f in fam:
-        test *= us10_helper(dict[f]['Married'], dic[dict[f]['Husband_ID']]['Birthday'], dic[dict[f]['Wife_ID']]['Birthday'])
+        test *= us10_helper(dict[f]['Married'], dict[dict[f]['Husband_ID']]['Birthday'], dict[dict[f]['Wife_ID']]['Birthday'])
     return test
 
 def us21_helper(husband_gender, wife_gender):
@@ -163,10 +164,70 @@ def us34(ind, fam, dict): #Mike
             couples.append(couple)
     return couples
 
-def us42(ind, fam, dict): #Oscar
+def us35(ind, fam, dict): #Oscar
+    "List all people in a GEDCOM file who were born in the last 30 days"
+    born_last_30_days = []
+    for i in ind:
+        if us36_helper(dict[i]['Birthday'], datatime.now()): # Now datetime doesn't work
+            birthday = (dict[i]['Birthday'])
+            born_last_30_days.append(birthday)
+    return born_last_30_days
+
+def us35_helper(birthday, current_date): 
+    bd = datetime(int(birthday[2]), int(MONTHS[birthday[1]]), int(birthday[0]))
+    cd = datetime(int(current_date[2]), int(MONTHS[current_date[1]]), int(current_date[0]))
+    cd_minus_30 = (cd - timedelta(days = 30))
+    return cd_minus_30 <= bd <= cd
+
+def us36(ind, fam, dict): #Oscar
+    "List all people in a GEDCOM file who died in the last 30 days"
+    died_last_30_days = []
+    for i in ind:
+        if (dict[i]['Death'] == "null"):
+            pass
+        elif (us36_helper(dict[i]['Death'], datatime.now())): # Now datetime doesn't work
+            death = (dict[i]['Death'])
+            died_last_30_days.append(death)
+    return died_last_30_days
+
+def us36_helper(birthday, current_date): 
+    dd = datetime(int(birthday[2]), int(MONTHS[birthday[1]]), int(birthday[0]))
+    cd = datetime(int(current_date[2]), int(MONTHS[current_date[1]]), int(current_date[0]))
+    cd_minus_30 = (cd - timedelta(days = 30))
+    return cd_minus_30 <= dd <= cd
+
+def us38(ind, fam, dict): #Oscar
+    "List all living people in a GEDCOM file whose birthdays occur in the next 30 days"
+    upcoming_birthday = []
+    for i in ind:
+        if us38_helper(dict[i]['Birthday'], datatime.now()): # Now datetime doesn't work
+            birthday = (dict[i]['Birthday'])
+            upcoming_birthday.append(birthday)
+    return upcoming_birthday
+
+def us38_helper(birthday, current_date): 
+    bd = datetime(int(birthday[2]), int(MONTHS[birthday[1]]), int(birthday[0]))
+    cd = datetime(int(current_date[2]), int(MONTHS[current_date[1]]), int(current_date[0]))
+    cd_plus_30 = (cd + timedelta(days = 30))
+    return cd <= bd <= cd_plus_30
+    
+    
+
+def us42(ind, fam, dict):
     "All dates should be legitimate dates for the months specified (e.g., 2/30/2015 is not legitimate)"
+    test = True
+    for f in fam:
+        test *= us42_helper(dict[f]['Married'])
+    for i in ind:
+        test *= us42_helpeer(dict['Birthday'])
+        test *= us42_helpeer(dict['Death'])
+    return test
+
+def us42_helper(date): #Oscar
+    if (date == "null"):
+        return True
     try :
-        datetime.datetime(int(year),int(month),int(day))
+        dt.datetime(int(date[2]), int(MONTHS[date[1]]), int(date[0]))
     except ValueError :
         return False
     return True

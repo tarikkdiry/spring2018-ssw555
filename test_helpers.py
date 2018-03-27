@@ -131,6 +131,71 @@ class Test(unittest.TestCase):
     def test_us34_5(self):
         self.assertFalse(gedcom.us34_helper(['13', 'MAR', '1940'], ['23', 'JUN', '1955'], ['1', 'JAN', '1954']))
         
+    ''' User Story 42 - Oscar '''
+    def test_us42_1(self):
+        self.assertTrue(gedcom.us42_helper(['16', 'FEB', '1940']))
+    
+    def test_us42_2(self):
+        self.assertFalse(gedcom.us42_helper(['29', 'FEB', '2019']))
+        
+    def test_us42_3(self):
+        self.assertTrue(gedcom.us42_helper(['29', 'FEB', '2020']))
+        
+    def test_us42_4(self):
+        self.assertTrue(gedcom.us42_helper(['16', 'DEC', '1940']))
+        
+    def test_us42_5(self):
+        self.assertFalse(gedcom.us42_helper(['0', 'JUN', '1940']))
+        
+    ''' User Story 38 - Oscar '''
+    def test_us38_1(self):
+        self.assertFalse(gedcom.us38_helper(['5', 'APR', '2018'], ['5', 'APR', '2017']))
+    
+    def test_us38_2(self):
+        self.assertTrue(gedcom.us38_helper(['11', 'MAR', '2019'], ['28', 'FEB', '2019']))
+        
+    def test_us38_3(self):
+        self.assertFalse(gedcom.us38_helper(['30', 'MAR', '2020'], ['30', 'MAR', '2021']))
+        
+    def test_us38_4(self):
+        self.assertTrue(gedcom.us38_helper(['18', 'DEC', '2018'], ['16', 'DEC', '2018']))
+        
+    def test_us38_5(self):
+        self.assertTrue(gedcom.us38_helper(['6', 'JUN', '1940'], ['1', 'JUN', '1940']))
+    
+    ''' User Story 35 - Oscar '''
+    def test_us35_1(self):
+        self.assertFalse(gedcom.us35_helper(['8', 'APR', '2018'], ['5', 'APR', '2018']))
+    
+    def test_us35_2(self):
+        self.assertTrue(gedcom.us35_helper(['25', 'FEB', '2019'], ['2', 'MAR', '2019']))
+        
+    def test_us35_3(self):
+        self.assertFalse(gedcom.us35_helper(['30', 'MAR', '2020'], ['30', 'MAR', '2021']))
+        
+    def test_us35_4(self):
+        self.assertTrue(gedcom.us35_helper(['16', 'DEC', '2018'], ['18', 'DEC', '2018']))
+        
+    def test_us35_5(self):
+        self.assertTrue(gedcom.us35_helper(['1', 'JUN', '1940'], ['6', 'JUN', '1940']))
+        
+    ''' User Story 36 - Oscar '''
+    def test_us35_1(self):
+        self.assertFalse(gedcom.us35_helper(['8', 'APR', '2018'], ['5', 'APR', '2018']))
+    
+    def test_us35_2(self):
+        self.assertTrue(gedcom.us35_helper(['25', 'FEB', '2019'], ['2', 'MAR', '2019']))
+        
+    def test_us35_3(self):
+        self.assertFalse(gedcom.us35_helper(['30', 'MAR', '2020'], ['30', 'MAR', '2021']))
+        
+    def test_us35_4(self):
+        self.assertTrue(gedcom.us35_helper(['16', 'DEC', '2018'], ['18', 'DEC', '2018']))
+        
+    def test_us35_5(self):
+        self.assertTrue(gedcom.us35_helper(['1', 'JUN', '1940'], ['6', 'JUN', '1940']))
+   
+        
 if __name__ == "__main__":
     unittest.main()
     

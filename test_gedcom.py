@@ -38,6 +38,9 @@ class Test(unittest.TestCase):
     def test_us29(self):
         self.assertEqual(gedcom.us29(INDIVIDUALS, FAMILIES, DICTIONARY), ['I1', 'I6'])
     
+    def test_us42(self):
+        self.assertTrue(gedcom.us22(INDIVIDUALS, FAMILIES, DICTIONARY))
+    
     '''def test_us34(self):
         self.assertEqual(gedcom.us34(INDIVIDUALS, FAMILIES, DICTIONARY), [])'''
     
