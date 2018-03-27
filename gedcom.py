@@ -2,6 +2,7 @@ import os
 import ast
 import sqlite3
 import gedcomDatabase
+import datetime
 from sqlite3 import Error
 from shutil import copyfile
 from datetime import datetime
@@ -161,6 +162,14 @@ def us34(ind, fam, dict): #Mike
         if us34_helper(dict[f]['Married'], dict[couple[0]]['Birthday'], dict[couple[1]]['Birthday']):
             couples.append(couple)
     return couples
+
+def us42(ind, fam, dict): #Oscar
+    "All dates should be legitimate dates for the months specified (e.g., 2/30/2015 is not legitimate)"
+    try :
+        datetime.datetime(int(year),int(month),int(day))
+    except ValueError :
+        return False
+    return True
 
 if __name__ == '__main__':
     ged = gedcomDatabase.file()
