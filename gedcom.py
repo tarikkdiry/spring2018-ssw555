@@ -11,6 +11,23 @@ from _datetime import timedelta
 
 MONTHS = {'JAN': '01', 'FEB': '02', 'MAR': '03', 'APR': '04', 'MAY': '05', 'JUN': '06', 'JUL': '07', 'AUG': '08', 'SEP' : '09', 'OCT': '10', 'NOV': '11', 'DEC': '12'}
 
+def us01_helper(date):
+    if not date:
+        return True
+    d = datetime(int(date[2]), int(MONTHS[date[1]]), int(date[0]))
+    n = datetime.now()
+    return d < n
+
+def us01(ind, fam, dict): #Austin
+    ''' Dates (birth, marriage, divorce, death) should not be after the current date '''
+    test = True
+    for i in ind:
+        test *= us01_helper(dict[i]['Birthday'])
+        test *= us01_helper(dict[i]['Death'])
+    for f in fam:
+        test *= us01_helper(dict[f]['Married'])
+    return test
+
 def us02_helper(marriage_date, individual_birth):
     if not marriage_date or not individual_birth:
         return False
@@ -38,6 +55,33 @@ def us03(ind, fam, dict): #Mike
     test = True
     for i in ind:
         test *= us03_helper(dict[i]['Birthday'], dict[i]['Death'])
+    return test
+
+def us05_helper(mother_death, father_death, marriage_date):
+    if not marriage_date:
+        return False
+    elif not mother_death and not father_death:
+        return True
+    
+    mar = datetime(int(marriage_date[2]), int(MONTHS[marriage_date[1]]), int(marriage_date[0]))
+    
+    if(father_death and not mother_death):
+        fd = datetime(int(father_death[2]), int(MONTHS[father_death[1]]), int(father_death[0]))
+        return fd > mar
+    
+    elif(mother_death and not father_death):
+        md = datetime(int(mother_death[2]), int(MONTHS[mother_death[1]]), int(mother_death[0]))
+        return md > mar
+    
+    fd = datetime(int(father_death[2]), int(MONTHS[father_death[1]]), int(father_death[0]))
+    md = datetime(int(mother_death[2]), int(MONTHS[mother_death[1]]), int(mother_death[0]))
+    return fd > mar and md > mar
+
+def us05(ind, fam, dict): #Austin
+    ''' Marriage should occur before death of either spouse '''
+    test = True
+    for f in fam:
+        test *= us03_helper(dict[dict[f]['Wife_ID']]['Death'], dict[dict[f]['Husband_ID']]['Death'], dict[f]['Married'])
     return test
 
 def us07_helper(children):
@@ -164,6 +208,12 @@ def us34(ind, fam, dict): #Mike
             couples.append(couple)
     return couples
 
+def us35_helper(birthday, current_date): 
+    bd = datetime(int(birthday[2]), int(MONTHS[birthday[1]]), int(birthday[0]))
+    cd = datetime(int(current_date[2]), int(MONTHS[current_date[1]]), int(current_date[0]))
+    cd_minus_30 = (cd - timedelta(days = 30))
+    return cd_minus_30 <= bd <= cd
+
 def us35(ind, fam, dict): #Oscar
     "List all people in a GEDCOM file who were born in the last 30 days"
     born_last_30_days = []
@@ -173,11 +223,11 @@ def us35(ind, fam, dict): #Oscar
             born_last_30_days.append(birthday)
     return born_last_30_days
 
-def us35_helper(birthday, current_date): 
-    bd = datetime(int(birthday[2]), int(MONTHS[birthday[1]]), int(birthday[0]))
+def us36_helper(birthday, current_date): 
+    dd = datetime(int(birthday[2]), int(MONTHS[birthday[1]]), int(birthday[0]))
     cd = datetime(int(current_date[2]), int(MONTHS[current_date[1]]), int(current_date[0]))
     cd_minus_30 = (cd - timedelta(days = 30))
-    return cd_minus_30 <= bd <= cd
+    return cd_minus_30 <= dd <= cd
 
 def us36(ind, fam, dict): #Oscar
     "List all people in a GEDCOM file who died in the last 30 days"
@@ -190,11 +240,11 @@ def us36(ind, fam, dict): #Oscar
             died_last_30_days.append(death)
     return died_last_30_days
 
-def us36_helper(birthday, current_date): 
-    dd = datetime(int(birthday[2]), int(MONTHS[birthday[1]]), int(birthday[0]))
+def us38_helper(birthday, current_date): 
+    bd = datetime(int(birthday[2]), int(MONTHS[birthday[1]]), int(birthday[0]))
     cd = datetime(int(current_date[2]), int(MONTHS[current_date[1]]), int(current_date[0]))
-    cd_minus_30 = (cd - timedelta(days = 30))
-    return cd_minus_30 <= dd <= cd
+    cd_plus_30 = (cd + timedelta(days = 30))
+    return cd <= bd <= cd_plus_30
 
 def us38(ind, fam, dict): #Oscar
     "List all living people in a GEDCOM file whose birthdays occur in the next 30 days"
@@ -205,13 +255,14 @@ def us38(ind, fam, dict): #Oscar
             upcoming_birthday.append(birthday)
     return upcoming_birthday
 
-def us38_helper(birthday, current_date): 
-    bd = datetime(int(birthday[2]), int(MONTHS[birthday[1]]), int(birthday[0]))
-    cd = datetime(int(current_date[2]), int(MONTHS[current_date[1]]), int(current_date[0]))
-    cd_plus_30 = (cd + timedelta(days = 30))
-    return cd <= bd <= cd_plus_30
-    
-    
+def us42_helper(date): #Oscar
+    if (date == "null"):
+        return True
+    try :
+        dt.datetime(int(date[2]), int(MONTHS[date[1]]), int(date[0]))
+    except ValueError :
+        return False
+    return True
 
 def us42(ind, fam, dict):
     "All dates should be legitimate dates for the months specified (e.g., 2/30/2015 is not legitimate)"
@@ -222,15 +273,6 @@ def us42(ind, fam, dict):
         test *= us42_helpeer(dict['Birthday'])
         test *= us42_helpeer(dict['Death'])
     return test
-
-def us42_helper(date): #Oscar
-    if (date == "null"):
-        return True
-    try :
-        dt.datetime(int(date[2]), int(MONTHS[date[1]]), int(date[0]))
-    except ValueError :
-        return False
-    return True
 
 if __name__ == '__main__':
     ged = gedcomDatabase.file()

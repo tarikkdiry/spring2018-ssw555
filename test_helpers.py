@@ -2,6 +2,25 @@ import unittest
 import gedcom
 
 class Test(unittest.TestCase):
+    ''' User Story 1 - Austin ''' 
+    def test_us01_1(self):
+        self.assertTrue(gedcom.us01_helper(['5', 'JAN', '2018']))
+ 
+    def test_us01_2(self):
+        self.assertTrue(gedcom.us01_helper(['1', 'JAN', '2000']))
+  
+    def test_us01_3(self):
+        self.assertFalse(gedcom.us01_helper(['1', 'DEC', '2020']))
+  
+    def test_us01_4(self):
+        self.assertTrue(gedcom.us01_helper([]))
+  
+    def test_us01_5(self):
+        self.assertFalse(gedcom.us01_helper(['1', 'JAN', '9999']))
+    
+    
+    
+    
     ''' User Story 2 - Oscar ''' 
     def test_us02_1(self):
         self.assertTrue(gedcom.us02_helper(['5', 'JAN', '2018'], ['1', 'JAN', '1955']))
@@ -34,7 +53,23 @@ class Test(unittest.TestCase):
         
     def test_us03_5(self):
         self.assertFalse(gedcom.us03_helper(['1', 'JAN', '1955'], ['1', 'JAN', '1950']))
-    
+
+    ''' User Story 5 - Austin '''
+    def test_us05_1(self):
+        self.assertFalse(gedcom.us05_helper([], ['1', 'JAN', '1950'], ['1', 'JAN', '1950']))
+
+    def test_us05_2(self):
+        self.assertFalse(gedcom.us05_helper(['13', 'FEB', '1940'], ['1', 'JAN', '1955'], ['1', 'JAN', '1950']))
+
+    def test_us05_3(self):
+        self.assertTrue(gedcom.us05_helper(['12', 'DEC', '2001'], ['1', 'JAN', '2001'], ['1', 'NOV', '1996']))
+
+    def test_us05_4(self):
+        self.assertFalse(gedcom.us05_helper([], [], []))
+        
+    def test_us05_5(self):
+        self.assertFalse(gedcom.us05_helper(['1', 'JAN', '1950'], ['1', 'JAN', '1955'], []))
+
     ''' User Story 7 - Tarik '''
     def test_us07_1(self):
         self.assertTrue(gedcom.us07_helper(['I1','I2','I3','I4','I5','I6','I7','I8','I9','I10','I11','I12','I13','I14']))

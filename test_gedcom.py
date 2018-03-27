@@ -14,11 +14,17 @@ class Test(unittest.TestCase):
     def test_LEVELS(self):
         self.assertEqual(gedcomDatabase.LEVELS, {'INDI':'0', 'NAME':'1', 'SEX':'1', 'BIRT':'1', 'DEAT':'1', 'FAMC':'1', 'FAMS':'1', 'FAM':'0', 'MARR':'1', 'HUSB':'1', 'WIFE':'1', 'CHIL':'1', 'DIV':'1', 'DATE':'2', 'HEAD':'0', 'TRLR':'0', 'NOTE':'0'})
 
+    def test_us01(self):
+        self.assertTrue(gedcom.us01(INDIVIDUALS, FAMILIES, DICTIONARY))
+
     def test_us02(self):
         self.assertTrue(gedcom.us02(INDIVIDUALS, FAMILIES, DICTIONARY))
 
     def test_us03(self):
         self.assertTrue(gedcom.us03(INDIVIDUALS, FAMILIES, DICTIONARY))
+
+    def test_us05(self):
+        self.assertTrue(gedcom.us05(INDIVIDUALS, FAMILIES, DICTIONARY))
 
     def test_us07(self):
         self.assertTrue(gedcom.us07(INDIVIDUALS, FAMILIES, DICTIONARY))
