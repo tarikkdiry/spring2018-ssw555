@@ -41,20 +41,6 @@ def us02(ind, fam, dict): #Oscar
             test *= us02_helper(dict[f]['Married'], dict[i]['Birthday'])
     return test
 
-def us04_helper(divorce_date, marriage_date):
-    if not marriage_date:
-        return False
-    if divorce_date:
-        return int(divorce_date[2]) > int(marriage_date[2])
-    return True
-
-def us04(ind, fam, dict): #Austin
-    ''' Marriage should occur before birth '''
-    test = True
-    for f in fam:
-        test *= us04_helper(dict[f]['Divorced'], dict[f]['Married'])
-    return test
-
 def us03_helper(birth, death):
     if not birth:
         return False
@@ -69,6 +55,20 @@ def us03(ind, fam, dict): #Mike
     test = True
     for i in ind:
         test *= us03_helper(dict[i]['Birthday'], dict[i]['Death'])
+    return test
+
+def us04_helper(divorce_date, marriage_date):
+    if not marriage_date:
+        return False
+    if divorce_date:
+        return int(divorce_date[2]) > int(marriage_date[2])
+    return True
+
+def us04(ind, fam, dict): #Austin
+    ''' Marriage should occur before birth '''
+    test = True
+    for f in fam:
+        test *= us04_helper(dict[f]['Divorced'], dict[f]['Married'])
     return test
 
 def us05_helper(mother_death, father_death, marriage_date):
@@ -166,6 +166,30 @@ def us10(ind, fam, dict): #Oscar
     for f in fam:
         test *= us10_helper(dict[f]['Married'], dict[dict[f]['Husband_ID']]['Birthday'], dict[dict[f]['Wife_ID']]['Birthday'])
     return test
+
+def us16(ind, fam, dict):
+    "There should be fewer than 15 siblings in a family"
+    test = True
+    for f in fam:
+        test *= us16_helper(dict[f]['Children'])
+    return test
+
+def us16_helper(children):
+    return (len(children)) < 15;
+
+def us17(ind, fam, dict):
+    "There should be fewer than 15 siblings in a family"
+    '''' NOT SURE IF THIS WORKS FOR OUR DICTIONARY'''
+    test = True
+    for f in fam:
+        children = dict[f]['Children']
+        fatherLastName = dict[f]['Husband_Name'][1];
+        for c in children:
+            test *= us17_helper(fatherLastName, dict[c]['Name'][1]);
+    return test
+
+def us17_helper(fatherLastName, childLastName):
+    return fatherLastName == childLastName;
 
 def us21_helper(husband_gender, wife_gender):
     return (husband_gender.upper()+wife_gender.upper()) == 'MF';

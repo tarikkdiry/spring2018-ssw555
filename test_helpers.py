@@ -149,7 +149,39 @@ class Test(unittest.TestCase):
   
     def test_us10_5(self):
         self.assertTrue(gedcom.us10_helper(['12', 'DEC', '2001'], ['1', 'JAN', '1980'], ['1', 'NOV', '1975']))
+        
+    ''' User Story 16 - Oscar '''
+    def test_us16_1(self):
+        self.assertTrue(gedcom.us16_helper(['15']))
 
+    def test_us16_2(self):
+        self.assertTrue(gedcom.us16_helper(['1']))
+
+    def test_us16_3(self):
+        self.assertTrue(gedcom.us16_helper([]))
+
+    def test_us16_4(self):
+        self.assertFalse(gedcom.us16_helper(['1','2','3','4','5','6','7','8','9','10','11','12','13','14','15']))
+        
+    def test_us16_5(self):
+        self.assertTrue(gedcom.us16_helper(['12', 'DEC', '2001']))
+
+    ''' User Story 17 - Oscar '''
+    def test_us17_1(self):
+        self.assertTrue(gedcom.us17_helper('Rocha', 'Rocha'))
+
+    def test_us17_2(self):
+        self.assertFalse(gedcom.us17_helper('abcx', 'abc'))
+
+    def test_us17_3(self):
+        self.assertFalse(gedcom.us17_helper(' ', 'name'))
+
+    def test_us17_4(self):
+        self.assertFalse(gedcom.us17_helper(' name ', 'name'))
+        
+    def test_us17_5(self):
+        self.assertTrue(gedcom.us17_helper('123', '123'))
+        
     ''' User Story 21 - Austin '''
     def test_us21_1(self):
         self.assertTrue(gedcom.us21_helper('m', 'f'))
