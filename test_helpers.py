@@ -54,6 +54,22 @@ class Test(unittest.TestCase):
     def test_us03_5(self):
         self.assertFalse(gedcom.us03_helper(['1', 'JAN', '1955'], ['1', 'JAN', '1950']))
 
+    ''' User Story 4 - Austin ''' 
+    def test_us04_1(self):
+        self.assertTrue(gedcom.us04_helper(['5', 'JAN', '2018'], ['1', 'JAN', '1955']))
+ 
+    def test_us04_2(self):
+        self.assertTrue(gedcom.us04_helper(['1', 'JAN', '2000'], ['1', 'JAN', '1950']))
+  
+    def test_us04_3(self):
+        self.assertFalse(gedcom.us04_helper(['1', 'DEC', '2000'], ['1', 'JAN', '2000']))
+  
+    def test_us04_4(self):
+        self.assertTrue(gedcom.us04_helper([], ['13', 'FEB', '1940']))
+  
+    def test_us04_5(self):
+        self.assertFalse(gedcom.us04_helper(['1', 'JAN', '1995'], []))
+
     ''' User Story 5 - Austin '''
     def test_us05_1(self):
         self.assertFalse(gedcom.us05_helper([], ['1', 'JAN', '1950'], ['1', 'JAN', '1950']))
@@ -69,6 +85,22 @@ class Test(unittest.TestCase):
         
     def test_us05_5(self):
         self.assertFalse(gedcom.us05_helper(['1', 'JAN', '1950'], ['1', 'JAN', '1955'], []))
+
+    ''' User Story 6 - Austin ''' 
+    def test_us06_1(self):
+        self.assertTrue(gedcom.us06_helper(['5', 'JAN', '2018'], ['1', 'JAN', '1955']))
+ 
+    def test_us06_2(self):
+        self.assertTrue(gedcom.us06_helper(['1', 'JAN', '2000'], ['1', 'JAN', '1950']))
+  
+    def test_us06_3(self):
+        self.assertFalse(gedcom.us06_helper(['1', 'DEC', '2000'], ['1', 'JAN', '2000']))
+  
+    def test_us06_4(self):
+        self.assertTrue(gedcom.us06_helper([], ['13', 'FEB', '1940']))
+  
+    def test_us06_5(self):
+        self.assertTrue(gedcom.us06_helper(['1', 'JAN', '1995'], []))
 
     ''' User Story 7 - Tarik '''
     def test_us07_1(self):

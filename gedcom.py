@@ -41,6 +41,20 @@ def us02(ind, fam, dict): #Oscar
             test *= us02_helper(dict[f]['Married'], dict[i]['Birthday'])
     return test
 
+def us04_helper(divorce_date, marriage_date):
+    if not marriage_date:
+        return False
+    if divorce_date:
+        return int(divorce_date[2]) > int(marriage_date[2])
+    return True
+
+def us04(ind, fam, dict): #Austin
+    ''' Marriage should occur before birth '''
+    test = True
+    for f in fam:
+        test *= us04_helper(dict[f]['Divorced'], dict[f]['Married'])
+    return test
+
 def us03_helper(birth, death):
     if not birth:
         return False
@@ -82,6 +96,19 @@ def us05(ind, fam, dict): #Austin
     test = True
     for f in fam:
         test *= us03_helper(dict[dict[f]['Wife_ID']]['Death'], dict[dict[f]['Husband_ID']]['Death'], dict[f]['Married'])
+    return test
+
+def us06_helper(death_date, divorce_date):
+    if not death_date or not divorce_date:
+        return True
+    return int(death_date[2]) > int(divorce_date[2])
+
+def us06(ind, fam, dict): #Austin
+    ''' Divorce should occur before death '''
+    test = True
+    for f in fam:
+        test *= us06_helper(dict[dict[f]['Husband_ID']]['Death'], dict[f]['Divorced'])
+        test *= us06_helper(dict[dict[f]['Wife_ID']]['Death'], dict[f]['Divorced'])
     return test
 
 def us07_helper(children):

@@ -23,8 +23,14 @@ class Test(unittest.TestCase):
     def test_us03(self):
         self.assertTrue(gedcom.us03(INDIVIDUALS, FAMILIES, DICTIONARY))
 
+    def test_us04(self):
+        self.assertTrue(gedcom.us04(INDIVIDUALS, FAMILIES, DICTIONARY))
+
     def test_us05(self):
         self.assertTrue(gedcom.us05(INDIVIDUALS, FAMILIES, DICTIONARY))
+
+    def test_us06(self):
+        self.assertTrue(gedcom.us06(INDIVIDUALS, FAMILIES, DICTIONARY))
 
     def test_us07(self):
         self.assertTrue(gedcom.us07(INDIVIDUALS, FAMILIES, DICTIONARY))
