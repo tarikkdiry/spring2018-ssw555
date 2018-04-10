@@ -167,17 +167,42 @@ def us10(ind, fam, dict): #Oscar
         test *= us10_helper(dict[f]['Married'], dict[dict[f]['Husband_ID']]['Birthday'], dict[dict[f]['Wife_ID']]['Birthday'])
     return test
 
-def us16(ind, fam, dict):
+# def us12(ind, fam, dict):
+#     """Mother should be less than 60 years older than her children
+#      and father should be less than 80 years older than his children"""
+#     '''' NOT SURE IF THIS WORKS FOR OUR DICTIONARY'''
+#     test = True
+#     for f in fam:
+#         children = dict[f]['Children']
+#         fatherID = dict[f]['Husband_ID'];
+#         motherID = dict[f]['Wife_ID'];
+#         fatherBirth = dict[fatherID]['Birthday'];
+#         motherBirth = dict[motherID]['Birthday'];
+#         for c in children:
+#             test *= us12_helper(fatherBirth, motherBirth, dict[c]['Birthday']);
+#     return test
+# 
+# def us12_helper(fatherBirth, motherBirth, childBirthday):
+#     if not fatherBirth or not motherBirth or not childBirthday:
+#         return False
+#     fb = datetime(int(fatherBirth[2]), int(MONTHS[fatherBirth[1]]), int(fatherBirth[0]))
+#     mb = datetime(int(motherBirth[2]), int(MONTHS[motherBirth[1]]), int(motherBirth[0]))
+#     cb = datetime(int(childBirthday[2]), int(MONTHS[childBirthday[1]]), int(childBirthday[0]))
+#     motherCompare = mb.year-cb.year >= 60 and md.year-wb.year >= 14
+#     fatherCompare = 
+#     return md.year-hb.year >= 14 and md.year-wb.year >= 14
+
+def us15(ind, fam, dict):
     "There should be fewer than 15 siblings in a family"
     test = True
     for f in fam:
-        test *= us16_helper(dict[f]['Children'])
+        test *= us15_helper(dict[f]['Children'])
     return test
 
-def us16_helper(children):
+def us15_helper(children):
     return (len(children)) < 15;
 
-def us17(ind, fam, dict):
+def us16(ind, fam, dict):
     "There should be fewer than 15 siblings in a family"
     '''' NOT SURE IF THIS WORKS FOR OUR DICTIONARY'''
     test = True
@@ -185,10 +210,10 @@ def us17(ind, fam, dict):
         children = dict[f]['Children']
         fatherLastName = dict[f]['Husband_Name'][1];
         for c in children:
-            test *= us17_helper(fatherLastName, dict[c]['Name'][1]);
+            test *= us16_helper(fatherLastName, dict[c]['Name'][1]);
     return test
 
-def us17_helper(fatherLastName, childLastName):
+def us16_helper(fatherLastName, childLastName):
     return fatherLastName == childLastName;
 
 def us21_helper(husband_gender, wife_gender):
@@ -273,6 +298,23 @@ def us35(ind, fam, dict): #Oscar
             birthday = (dict[i]['Birthday'])
             born_last_30_days.append(birthday)
     return born_last_30_days
+
+def us36_helper(birthday, current_date): 
+    dd = datetime(int(birthday[2]), int(MONTHS[birthday[1]]), int(birthday[0]))
+    cd = datetime(int(current_date[2]), int(MONTHS[current_date[1]]), int(current_date[0]))
+    cd_minus_30 = (cd - timedelta(days = 30))
+    return cd_minus_30 <= dd <= cd
+
+def us36(ind, fam, dict): #Oscar
+    "List all people in a GEDCOM file who died in the last 30 days"
+    died_last_30_days = []
+    for i in ind:
+        if (dict[i]['Death'] == "null"):
+            pass
+        elif (us36_helper(dict[i]['Death'], datatime.now())): # Now datetime doesn't work
+            death = (dict[i]['Death'])
+            died_last_30_days.append(death)
+    return died_last_30_days
 
 def us36_helper(birthday, current_date): 
     dd = datetime(int(birthday[2]), int(MONTHS[birthday[1]]), int(birthday[0]))
