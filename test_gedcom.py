@@ -2,18 +2,12 @@ import unittest
 import gedcom, gedcomDatabase
 
 TEST_FILE = 'sample_arocha.ged'
-DATABASE = TEST_FILE.replace(gedcom.EXTENSION, '.sqlite3')
+DATABASE = TEST_FILE.replace('.ged', '.sqlite3')
 gedcomDatabase.database(TEST_FILE, DATABASE)
 INDIVIDUALS, FAMILIES, DICTIONARY = gedcomDatabase.dictify(DATABASE)
 
 class Test(unittest.TestCase):
-
-    def test_TAGS(self):
-        self.assertEqual(gedcomDatabase.TAGS, ['INDI', 'NAME', 'SEX', 'BIRT', 'DEAT', 'FAMC', 'FAMS', 'FAM', 'MARR', 'HUSB', 'WIFE', 'CHIL', 'DIV', 'DATE', 'HEAD', 'TRLR', 'NOTE'])
-
-    def test_LEVELS(self):
-        self.assertEqual(gedcomDatabase.LEVELS, {'INDI':'0', 'NAME':'1', 'SEX':'1', 'BIRT':'1', 'DEAT':'1', 'FAMC':'1', 'FAMS':'1', 'FAM':'0', 'MARR':'1', 'HUSB':'1', 'WIFE':'1', 'CHIL':'1', 'DIV':'1', 'DATE':'2', 'HEAD':'0', 'TRLR':'0', 'NOTE':'0'})
-
+    
     def test_us01(self):
         self.assertTrue(gedcom.us01(INDIVIDUALS, FAMILIES, DICTIONARY))
 
@@ -46,6 +40,12 @@ class Test(unittest.TestCase):
 
     def test_us22(self):
         self.assertTrue(gedcom.us22(INDIVIDUALS, FAMILIES, DICTIONARY))
+
+    def test_us26(self):
+        self.assertTrue(gedcom.us26(INDIVIDUALS, FAMILIES, DICTIONARY))
+        
+    def test_us27(self):
+        self.assertTrue(gedcom.us27(INDIVIDUALS, FAMILIES, DICTIONARY))
 
     def test_us29(self):
         self.assertEqual(gedcom.us29(INDIVIDUALS, FAMILIES, DICTIONARY), ['I1', 'I6'])

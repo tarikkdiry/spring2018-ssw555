@@ -37,7 +37,7 @@ def us02_helper(marriage_date, individual_birth):
 
 def us02(ind, fam, dict): #Oscar
     ''' Birth should occur before marriage of an individual '''
-    test = true
+    test = True
     for f in fam:
         for i in [dict[f]['Husband_ID'], dict[f]['Wife_ID']]:
             test *= us02_helper(dict[f]['Married'], dict[i]['Birthday'])
@@ -232,6 +232,9 @@ def us14_helper(birthdays):
             return False
     return True;
 
+def us15_helper(children):
+    return (len(children)) < 15;
+
 def us15(ind, fam, dict):
     "There should be fewer than 15 siblings in a family"
     test = True
@@ -239,8 +242,8 @@ def us15(ind, fam, dict):
         test *= us15_helper(dict[f]['Children'])
     return test
 
-def us15_helper(children):
-    return (len(children)) < 15;
+def us16_helper(fatherLastName, childLastName):
+    return fatherLastName == childLastName;
 
 def us16(ind, fam, dict):
     "There should be fewer than 15 siblings in a family"
@@ -252,9 +255,6 @@ def us16(ind, fam, dict):
         for c in children:
             test *= us16_helper(fatherLastName, dict[c]['Name'][1]);
     return test
-
-def us16_helper(fatherLastName, childLastName):
-    return fatherLastName == childLastName;
 
 def us21_helper(husband_gender, wife_gender):
     return (husband_gender.upper()+wife_gender.upper()) == 'MF';
@@ -291,6 +291,32 @@ def us23(ind, fam, dict): #Austin
     for i in ind:
         unique.append(us23_helper(dict[i]['Name'], dict[i]['Birthday']))
     return len(unique) == len(set(unique))
+
+def us26(ind, fam, dict): #Mike
+    ''' Include Individual Ages '''
+    test = True
+    for i in ind:
+        if dict[i]['Child']:
+            f = dict[i]['Child']
+        else:
+            f = dict[i]['Spouse']
+        l = []
+        l.append(dict[f]['Husband_ID'])
+        l.append(dict[f]['Wife_ID'])
+        l.append(dict[f]['Children']) 
+        test *= i in l
+    return test
+
+def us27_helper(age):
+    return not not age
+
+def us27(ind, fam, dict): #Mike
+    ''' Include Individual Ages '''
+    test = True
+    for i in ind:
+        test *= us27_helper(dict[i]['Age'])
+    return test
+
 
 def us29_helper(individual, alive):
     if not alive:
