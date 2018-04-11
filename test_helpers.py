@@ -149,6 +149,44 @@ class Test(unittest.TestCase):
   
     def test_us10_5(self):
         self.assertTrue(gedcom.us10_helper(['12', 'DEC', '2001'], ['1', 'JAN', '1980'], ['1', 'NOV', '1975']))
+
+    ''' User Story 12 - Tarik ''' 
+    def test_us12_1(self):
+        self.assertFalse(gedcom.us12_helper([], ['1', 'JAN', '1950'], ['1', 'JAN', '1950']))
+ 
+    def test_us12_2(self):
+        self.assertTrue(gedcom.us12_helper(['1', 'JAN', '2000'], ['2', 'JAN', '2000'], ['1', 'JAN', '2060']))
+  
+    def test_us12_3(self):
+        self.assertFalse(gedcom.us12_helper(['1', 'JAN', '1900'], [], ['1', 'JAN', '1950']))
+  
+    def test_us12_4(self):
+        self.assertTrue(gedcom.us12_helper(['1', 'JAN', '2000'], ['1', 'JAN', '2000'], ['1', 'JAN', '1999']))
+  
+    def test_us12_5(self):
+        self.assertTrue(gedcom.us12_helper(['1', 'JAN', '2000'], ['1', 'JAN', '2000'], ['1', 'JAN', '2000']))
+    
+    def test_us12_6(self):
+        self.assertFalse(gedcom.us12_helper(['1', 'JAN', '2000'], ['1', 'JAN', '2060'], ['1', 'JAN', '2080']))
+
+    ''' User Story 14 - Tarik ''' 
+    def test_us14_1(self):
+        self.assertFalse(gedcom.us14_helper([['1', 'JAN', '1950'],['1', 'JAN', '1950'],['1', 'JAN', '1950'],['1', 'JAN', '1950'],['1', 'JAN', '1950'],['1', 'JAN', '1950']]))
+ 
+    def test_us14_2(self):
+        self.assertFalse(gedcom.us14_helper([['13', 'FEB', '1940'], ['13', 'FEB', '1940'],['13', 'FEB', '1940'], ['1', 'JAN', '1950'],['13', 'FEB', '1940'],['13', 'FEB', '1940']]))
+  
+    def test_us14_3(self):
+        self.assertFalse(gedcom.us14_helper([]))
+  
+    def test_us14_4(self):
+        self.assertTrue(gedcom.us14_helper([['1', 'JAN', '2001'], ['1', 'JAN', '1915'], ['1', 'JAN', '1915']]))
+  
+    def test_us14_5(self):
+        self.assertTrue(gedcom.us14_helper([['12', 'DEC', '2001'], ['1', 'JAN', '1980'], ['1', 'NOV', '1975']]))
+        
+    def test_us14_6(self):
+        self.assertTrue(gedcom.us14_helper(['1','1']))
         
     ''' User Story 15 - Oscar '''
     def test_us15_1(self):

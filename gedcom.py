@@ -3,11 +3,13 @@ import ast
 import sqlite3
 import gedcomDatabase
 import datetime as dt
+import collections
 from sqlite3 import Error
 from shutil import copyfile
 from datetime import datetime
 from prettytable import PrettyTable
 from _datetime import timedelta
+from sqlalchemy.sql.expression import false
 
 MONTHS = {'JAN': '01', 'FEB': '02', 'MAR': '03', 'APR': '04', 'MAY': '05', 'JUN': '06', 'JUL': '07', 'AUG': '08', 'SEP' : '09', 'OCT': '10', 'NOV': '11', 'DEC': '12'}
 
@@ -167,30 +169,68 @@ def us10(ind, fam, dict): #Oscar
         test *= us10_helper(dict[f]['Married'], dict[dict[f]['Husband_ID']]['Birthday'], dict[dict[f]['Wife_ID']]['Birthday'])
     return test
 
-# def us12(ind, fam, dict):
-#     """Mother should be less than 60 years older than her children
-#      and father should be less than 80 years older than his children"""
-#     '''' NOT SURE IF THIS WORKS FOR OUR DICTIONARY'''
-#     test = True
-#     for f in fam:
-#         children = dict[f]['Children']
-#         fatherID = dict[f]['Husband_ID'];
-#         motherID = dict[f]['Wife_ID'];
-#         fatherBirth = dict[fatherID]['Birthday'];
-#         motherBirth = dict[motherID]['Birthday'];
-#         for c in children:
-#             test *= us12_helper(fatherBirth, motherBirth, dict[c]['Birthday']);
-#     return test
-# 
-# def us12_helper(fatherBirth, motherBirth, childBirthday):
-#     if not fatherBirth or not motherBirth or not childBirthday:
-#         return False
-#     fb = datetime(int(fatherBirth[2]), int(MONTHS[fatherBirth[1]]), int(fatherBirth[0]))
-#     mb = datetime(int(motherBirth[2]), int(MONTHS[motherBirth[1]]), int(motherBirth[0]))
-#     cb = datetime(int(childBirthday[2]), int(MONTHS[childBirthday[1]]), int(childBirthday[0]))
-#     motherCompare = mb.year-cb.year >= 60 and md.year-wb.year >= 14
-#     fatherCompare = 
-#     return md.year-hb.year >= 14 and md.year-wb.year >= 14
+def us12(ind, fam, dict):
+    """Mother should be less than 60 years older than her children
+     and father should be less than 80 years older than his children"""
+    '''' NOT SURE IF THIS WORKS FOR OUR DICTIONARY'''
+    test = True
+    for f in fam:
+        children = dict[f]['Children']
+        fatherID = dict[f]['Husband_ID'];
+        motherID = dict[f]['Wife_ID'];
+        fatherBirth = dict[fatherID]['Birthday'];
+        motherBirth = dict[motherID]['Birthday'];
+        for c in children:
+            test *= us12_helper(fatherBirth, motherBirth, dict[c]['Birthday']);
+    return test
+ 
+def us12_helper(fatherBirth, motherBirth, childBirthday):
+    if not fatherBirth or not motherBirth or not childBirthday:
+        return False
+    fb = datetime(int(fatherBirth[2]), int(MONTHS[fatherBirth[1]]), int(fatherBirth[0]))
+    mb = datetime(int(motherBirth[2]), int(MONTHS[motherBirth[1]]), int(motherBirth[0]))
+    cb = datetime(int(childBirthday[2]), int(MONTHS[childBirthday[1]]), int(childBirthday[0]))
+    motherCompare = True
+    if cb.year-mb.year > 60:
+        motherCompare = False
+    elif cb.year-mb.year == 60:
+        if mb.month < cb.month:
+            motherCompare = False
+        elif mb.month == cb.month:
+            if mb.day <= cb.day:
+                motherCompare = False
+    fatherCompare = True
+    if cb.year-fb.year > 80:
+        fatherCompare = False
+    elif cb.year-fb.year == 80:
+        if fb.month < cb.month:
+            fatherCompare = False
+        elif fb.month == cb.month:
+            if fb.day <= cb.day:
+                fatherCompare = False
+    return fatherCompare and motherCompare
+
+def us14(ind, fam, dict):
+    "No more than five siblings should be born at the same time"
+    ""
+    test = True
+    birthdays = []
+    for f in fam:
+        children = dict[f]['Children']
+    for c in children:
+        birthdays += dict[c]['Birthday']
+    for b in birthdays:
+        test *= us14_helper(birthdays);
+    return test
+
+def us14_helper(birthdays):
+    if not birthdays:
+        return False
+    counter = collections.Counter(birthdays)
+    for c in counter:
+        if c > "5":
+            return False
+    return True;
 
 def us15(ind, fam, dict):
     "There should be fewer than 15 siblings in a family"
