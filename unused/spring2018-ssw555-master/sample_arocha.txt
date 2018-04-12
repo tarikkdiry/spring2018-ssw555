@@ -1,0 +1,282 @@
+--> 0 NOTE Austin Rocha
+<-- 0|NOTE|Y|Austin Rocha
+--> 0 HEAD
+<-- 0|HEAD|Y|0 HEAD
+--> 1 SOUR Family Echo
+<-- 1|SOUR|N|Family Echo
+--> 2 WWW http://www.familyecho.com/
+<-- 2|WWW|N|http://www.familyecho.com/
+--> 1 FILE ssw555-spring2018
+<-- 1|FILE|N|ssw555-spring2018
+--> 1 DATE 26 JAN 2018
+<-- 1|DATE|N|26 JAN 2018
+--> 1 DEST ANSTFILE
+<-- 1|DEST|N|ANSTFILE
+--> 1 GEDC
+<-- 1|GEDC|N|1 GEDC
+--> 2 VERS 5.5.1
+<-- 2|VERS|N|5.5.1
+--> 2 FORM LINEAGE-LINKED
+<-- 2|FORM|N|LINEAGE-LINKED
+--> 1 SUBM @I1@
+<-- 1|SUBM|N|@I1@
+--> 2 NAME Austin
+<-- 2|NAME|N|Austin
+--> 1 SUBN
+<-- 1|SUBN|N|1 SUBN
+--> 1 CHAR UTF-8
+<-- 1|CHAR|N|UTF-8
+--> 0 @I1@ INDI
+<-- 0|INDI|Y|id
+--> 1 NAME Bob /Rocha/
+<-- 1|NAME|Y|Bob /Rocha/
+--> 2 GIVN Bob
+<-- 2|GIVN|N|Bob
+--> 2 SURN Rocha
+<-- 2|SURN|N|Rocha
+--> 2 _MARNM Rocha
+<-- 2|_MARNM|N|Rocha
+--> 1 SEX M
+<-- 1|SEX|Y|M
+--> 1 BIRT
+<-- 1|BIRT|Y|1 BIRT
+--> 2 DATE 1 JAN 1950
+<-- 2|DATE|Y|1 JAN 1950
+--> 1 DEAT Y
+<-- 1|DEAT|Y|Y
+--> 2 DATE 7 SEP 1999
+<-- 2|DATE|Y|7 SEP 1999
+--> 1 FAMS @F1@
+<-- 1|FAMS|Y|@F1@
+--> 0 @I2@ INDI
+<-- 0|INDI|Y|id
+--> 1 NAME Amanda /Barnett/
+<-- 1|NAME|Y|Amanda /Barnett/
+--> 2 GIVN Amanda
+<-- 2|GIVN|N|Amanda
+--> 2 SURN Barnett
+<-- 2|SURN|N|Barnett
+--> 2 _MARNM Rocha
+<-- 2|_MARNM|N|Rocha
+--> 1 SEX F
+<-- 1|SEX|Y|F
+--> 1 BIRT
+<-- 1|BIRT|Y|1 BIRT
+--> 2 DATE 10 APR 1951
+<-- 2|DATE|Y|10 APR 1951
+--> 1 FAMS @F1@
+<-- 1|FAMS|Y|@F1@
+--> 0 @I3@ INDI
+<-- 0|INDI|Y|id
+--> 1 NAME Carlos /Rocha/
+<-- 1|NAME|Y|Carlos /Rocha/
+--> 2 GIVN Carlos
+<-- 2|GIVN|N|Carlos
+--> 2 SURN Rocha
+<-- 2|SURN|N|Rocha
+--> 2 _MARNM Rocha
+<-- 2|_MARNM|N|Rocha
+--> 1 SEX M
+<-- 1|SEX|Y|M
+--> 1 BIRT
+<-- 1|BIRT|Y|1 BIRT
+--> 2 DATE 7 MAR 1970
+<-- 2|DATE|Y|7 MAR 1970
+--> 1 FAMS @F2@
+<-- 1|FAMS|Y|@F2@
+--> 1 FAMC @F1@
+<-- 1|FAMC|Y|@F1@
+--> 0 @I4@ INDI
+<-- 0|INDI|Y|id
+--> 1 NAME Doris /Rocha/
+<-- 1|NAME|Y|Doris /Rocha/
+--> 2 GIVN Doris
+<-- 2|GIVN|N|Doris
+--> 2 SURN Rocha
+<-- 2|SURN|N|Rocha
+--> 2 _MARNM Greene
+<-- 2|_MARNM|N|Greene
+--> 1 SEX F
+<-- 1|SEX|Y|F
+--> 1 BIRT
+<-- 1|BIRT|Y|1 BIRT
+--> 2 DATE 10 AUG 1972
+<-- 2|DATE|Y|10 AUG 1972
+--> 1 FAMS @F3@
+<-- 1|FAMS|Y|@F3@
+--> 1 FAMS @F4@
+<-- 1|FAMS|Y|@F4@
+--> 1 FAMC @F1@
+<-- 1|FAMC|Y|@F1@
+--> 0 @I5@ INDI
+<-- 0|INDI|Y|id
+--> 1 NAME Delores /Deker/
+<-- 1|NAME|Y|Delores /Deker/
+--> 2 GIVN Delores
+<-- 2|GIVN|N|Delores
+--> 2 SURN Deker
+<-- 2|SURN|N|Deker
+--> 2 _MARNM Rocha
+<-- 2|_MARNM|N|Rocha
+--> 1 SEX F
+<-- 1|SEX|Y|F
+--> 1 BIRT
+<-- 1|BIRT|Y|1 BIRT
+--> 2 DATE 9 MAY 1974
+<-- 2|DATE|Y|9 MAY 1974
+--> 1 FAMS @F2@
+<-- 1|FAMS|Y|@F2@
+--> 0 @I6@ INDI
+<-- 0|INDI|Y|id
+--> 1 NAME Jack /Floyd/
+<-- 1|NAME|Y|Jack /Floyd/
+--> 2 GIVN Jack
+<-- 2|GIVN|N|Jack
+--> 2 SURN Floyd
+<-- 2|SURN|N|Floyd
+--> 2 _MARNM Floyd
+<-- 2|_MARNM|N|Floyd
+--> 1 SEX M
+<-- 1|SEX|Y|M
+--> 1 BIRT
+<-- 1|BIRT|Y|1 BIRT
+--> 2 DATE 7 MAR 1972
+<-- 2|DATE|Y|7 MAR 1972
+--> 1 DEAT Y
+<-- 1|DEAT|Y|Y
+--> 2 DATE 5 JUL 1998
+<-- 2|DATE|Y|5 JUL 1998
+--> 1 FAMS @F4@
+<-- 1|FAMS|Y|@F4@
+--> 0 @I7@ INDI
+<-- 0|INDI|Y|id
+--> 1 NAME Anita /Floyd/
+<-- 1|NAME|Y|Anita /Floyd/
+--> 2 GIVN Anita
+<-- 2|GIVN|N|Anita
+--> 2 SURN Floyd
+<-- 2|SURN|N|Floyd
+--> 2 _MARNM Floyd
+<-- 2|_MARNM|N|Floyd
+--> 1 SEX F
+<-- 1|SEX|Y|F
+--> 1 BIRT
+<-- 1|BIRT|Y|1 BIRT
+--> 2 DATE 19 NOV 1996
+<-- 2|DATE|Y|19 NOV 1996
+--> 1 FAMC @F4@
+<-- 1|FAMC|Y|@F4@
+--> 0 @I8@ INDI
+<-- 0|INDI|Y|id
+--> 1 NAME Dominic /Greene/
+<-- 1|NAME|Y|Dominic /Greene/
+--> 2 GIVN Dominic
+<-- 2|GIVN|N|Dominic
+--> 2 SURN Greene
+<-- 2|SURN|N|Greene
+--> 2 _MARNM Greene
+<-- 2|_MARNM|N|Greene
+--> 1 SEX M
+<-- 1|SEX|Y|M
+--> 1 FAMS @F3@
+<-- 1|FAMS|Y|@F3@
+--> 0 @I9@ INDI
+<-- 0|INDI|Y|id
+--> 1 NAME Stephen /Greene/
+<-- 1|NAME|Y|Stephen /Greene/
+--> 2 GIVN Stephen
+<-- 2|GIVN|N|Stephen
+--> 2 SURN Greene
+<-- 2|SURN|N|Greene
+--> 2 _MARNM Greene
+<-- 2|_MARNM|N|Greene
+--> 1 SEX M
+<-- 1|SEX|Y|M
+--> 1 BIRT
+<-- 1|BIRT|Y|1 BIRT
+--> 2 DATE 10 AUG 2003
+<-- 2|DATE|Y|10 AUG 2003
+--> 1 FAMC @F3@
+<-- 1|FAMC|Y|@F3@
+--> 0 @I10@ INDI
+<-- 0|INDI|Y|id
+--> 1 NAME Adam /Rocha/
+<-- 1|NAME|Y|Adam /Rocha/
+--> 2 GIVN Adam
+<-- 2|GIVN|N|Adam
+--> 2 SURN Rocha
+<-- 2|SURN|N|Rocha
+--> 2 _MARNM Rocha
+<-- 2|_MARNM|N|Rocha
+--> 1 SEX M
+<-- 1|SEX|Y|M
+--> 1 BIRT
+<-- 1|BIRT|Y|1 BIRT
+--> 2 DATE 12 MAY 2001
+<-- 2|DATE|Y|12 MAY 2001
+--> 1 FAMC @F2@
+<-- 1|FAMC|Y|@F2@
+--> 0 @F1@ FAM
+<-- 0|@F1@|N|FAM
+--> 1 HUSB @I1@
+<-- 1|HUSB|Y|@I1@
+--> 1 WIFE @I2@
+<-- 1|WIFE|Y|@I2@
+--> 1 CHIL @I3@
+<-- 1|CHIL|Y|@I3@
+--> 1 CHIL @I4@
+<-- 1|CHIL|Y|@I4@
+--> 1 MARR
+<-- 1|MARR|Y|1 MARR
+--> 2 DATE 1 JAN 1972
+<-- 2|DATE|Y|1 JAN 1972
+--> 1 _CURRENT Y
+<-- 1|_CURRENT|N|Y
+--> 0 @F2@ FAM
+<-- 0|@F2@|N|FAM
+--> 1 HUSB @I3@
+<-- 1|HUSB|Y|@I3@
+--> 1 WIFE @I5@
+<-- 1|WIFE|Y|@I5@
+--> 1 CHIL @I10@
+<-- 1|CHIL|Y|@I10@
+--> 1 MARR
+<-- 1|MARR|Y|1 MARR
+--> 2 DATE 11 JUN 1996
+<-- 2|DATE|Y|11 JUN 1996
+--> 1 _CURRENT Y
+<-- 1|_CURRENT|N|Y
+--> 0 @F3@ FAM
+<-- 0|@F3@|N|FAM
+--> 1 HUSB @I8@
+<-- 1|HUSB|Y|@I8@
+--> 1 WIFE @I4@
+<-- 1|WIFE|Y|@I4@
+--> 1 CHIL @I9@
+<-- 1|CHIL|Y|@I9@
+--> 1 MARR
+<-- 1|MARR|Y|1 MARR
+--> 2 DATE 11 SEP 2000
+<-- 2|DATE|Y|11 SEP 2000
+--> 1 _CURRENT Y
+<-- 1|_CURRENT|N|Y
+--> 0 @F4@ FAM
+<-- 0|@F4@|N|FAM
+--> 1 HUSB @I6@
+<-- 1|HUSB|Y|@I6@
+--> 1 WIFE @I4@
+<-- 1|WIFE|Y|@I4@
+--> 1 CHIL @I7@
+<-- 1|CHIL|Y|@I7@
+--> 1 MARR
+<-- 1|MARR|Y|1 MARR
+--> 2 DATE 6 JUN 1996
+<-- 2|DATE|Y|6 JUN 1996
+--> 1 EVEN
+<-- 1|EVEN|N|1 EVEN
+--> 2 TYPE Ending
+<-- 2|TYPE|N|Ending
+--> 1 _CURRENT N
+<-- 1|_CURRENT|N|N
+--> 0 TRLR
+<-- 0|TRLR|Y|0 TRLR
